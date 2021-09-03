@@ -1,0 +1,25 @@
+{
+  "name": "tattoo-shop",
+  "version": "1.0.0",
+  "description": "Tattoo shop management system",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon --ignore 'db.json' server.js",
+    "json-server": "json-server --host api.tsms.tattoo --watch db.json --quiet",
+    "http-server": "http-server --cors -a tsms.tattoo -o . --silent",
+    "start": "concurrently \"npm run json-server\" \"npm run http-server\""
+  },
+  "type": "module",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^5.1.0",
+    "express": "^4.17.1",
+    "http-server": "^13.0.1",
+    "json-server": "^0.16.3",
+    "lowdb": "^2.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  }
+}
