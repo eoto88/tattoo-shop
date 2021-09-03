@@ -215,7 +215,13 @@ async function clientDialog(id) {
 
     let depotsHtml = '';
     client.depots.forEach(function(depot) {
-        depotsHtml += "<li class=\"list-group-item\">"+ depot.montant +"</li>"
+        let etat;
+        if( depot.deduit ){
+            etat =`<span class="badge bg-primary rounded-pill">Déduit</span>`;
+        } else if( depot.perdu ) {
+            etat =`<span class="badge bg-primary rounded-pill">Perdu</span>`;
+        }
+        depotsHtml += `<li class="list-group-item d-flex justify-content-between align-items-start"><div class="ms-2 me-auto"><div>${depot.date}</div>${depot.montant}$</div>${etat}</li>`;
     });
     depots.innerHTML = depotsHtml;
 
