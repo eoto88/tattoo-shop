@@ -16,6 +16,7 @@
   <!-- Place favicon.ico in the root directory -->
 
   <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="node_modules/bootstrap-icons/font/bootstrap-icons.css" />
   <link rel="stylesheet" href="css/style.css">
 
   <meta name="theme-color" content="#fafafa">
@@ -26,10 +27,14 @@
 
     <h1>TSMS - Tattoo shop management system</h1>
 
-    <label for="search">Rechercher</label>
-    <input type="text" id="search" />
+    <div class="input-group mb-3">
+      <label for="search" class="input-group-text">Rechercher</label>
+      <input type="text" id="search" class="form-control" />
+    </div>
 
-    <ul id="liste-clients" class="list-group"></ul>
+    <div class="mb-3">
+      <ul id="liste-clients" class="list-group"></ul>
+    </div>
 
     <a href="javascript:void(0);" id="create-client">Créer un client</a>
 </div>
@@ -42,7 +47,25 @@
         <span class="close">&times;</span>
       </div>
       <div class="modal-body">
-        <p>Nom: <span class="name"></span><input type="text" class="name-input" /></p>
+        <input type="hidden" id="clientId" />
+        <div class="mb-3 row">
+          <label for="clientName" class="col-sm-2 col-form-label">Nom:</label>
+          <div class="col-sm-7">
+            <span class="name"></span>
+            <input type="text" class="name-input" id="clientName" />
+          </div>
+          <div class="col-sm-3">
+            <button class="btn-name-input btn btn-outline-primary" title="Modifier">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn-name-save btn btn-outline-primary" title="Enregistrer">
+              <i class="bi bi-save"></i>
+            </button>
+            <button class="btn-name-cancel btn btn-outline-primary" title="Annuler">
+              <i class="bi bi-x-lg"></i>
+            </button>
+          </div>
+        </div>
         <h2>Dépots</h2>
         <ul class="depots list-group"></ul>
       </div>
