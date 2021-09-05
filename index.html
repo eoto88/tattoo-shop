@@ -24,11 +24,14 @@
 
 <body>
   <div class="container">
-
-    <h1>TSMS - Tattoo shop management system</h1>
+    <div class="row">
+      <div class="col-12 py-4">
+        <h1>TSMS - Tattoo shop management system</h1>
+      </div>
+    </div>
 
     <div class="input-group mb-3">
-      <label for="search" class="input-group-text">Rechercher</label>
+      <label for="search" class="input-group-text">Rechercher&nbsp;&nbsp;<i class="bi bi-search"></i></label>
       <input type="text" id="search" class="form-control" />
     </div>
 
@@ -36,8 +39,11 @@
       <ul id="liste-clients" class="list-group"></ul>
     </div>
 
-    <a href="javascript:void(0);" id="create-client">Créer un client</a>
-</div>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+      <button type="button" class="btn btn-outline-primary" id="create-client">Créer un client&nbsp&nbsp;<i class="bi bi-person-plus"></i>
+      </button>
+    </div> 
+  </div>
 
   <div id="tsmsModal" class="modal">
 
@@ -49,9 +55,11 @@
       <div class="modal-body">
         <input type="hidden" id="clientId" />
         <div class="mb-3 row">
-          <label for="clientName" class="col-sm-2 col-form-label">Nom:</label>
+          <div class="col-sm-2">
+            <label for="clientName" class="col-form-label">Nom:</label>
+          </div>
           <div class="col-sm-7">
-            <span class="name"></span>
+            <span class="name col-form-label"></span>
             <input type="text" class="name-input" id="clientName" />
           </div>
           <div class="col-sm-3">
@@ -67,10 +75,20 @@
           </div>
         </div>
         <h2>Dépots</h2>
-        <ul class="depots list-group"></ul>
+        <!-- <ul class="depots list-group"></ul> -->
+        <table class="depots table table-striped">
+          <thead>
+            <th>Date du dépot</th>
+            <th>Montant</th>
+            <th>État</th>
+            <th>Date de changement d'état</th>
+            <th>Actions</th>
+          </thead>
+          <tbody></tbody>
+        </table>
       </div>
       <div class="modal-footer">
-        Ajouter un dépot
+        <button type="button" class="btn btn-outline-primary" id="create-depot">Ajouter un dépot&nbsp;&nbsp;<i class="bi bi-journal-plus"></i></button>
       </div>
     </div>
   

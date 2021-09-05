@@ -1,44 +1,44 @@
 let tsms = {};
 tsms.clients = [];
-tsms.lastQuery;
+tsms.lastQuery = undefined;
 
 function docReady(fn) {
-    // see if DOM is already available
-    if (document.readyState === "complete" || document.readyState === "interactive") {
-        // call on next available tick
-        setTimeout(fn, 1);
-    } else {
-        document.addEventListener("DOMContentLoaded", fn);
-    }
+  // see if DOM is already available
+  if (document.readyState === "complete" || document.readyState === "interactive") {
+    // call on next available tick
+    setTimeout(fn, 1);
+  } else {
+    document.addEventListener("DOMContentLoaded", fn);
+  }
 }
 
-docReady(async function() {
-    let search = document.getElementById("search");
-    let createClient = document.getElementById("create-client");
+docReady(async function () {
+  let search = document.getElementById("search");
+  const btnAddClient = document.getElementById("create-client");
 
-    createClient.onclick = function() {
-        createClientDialog();
+  btnAddClient.onclick = function () {
+    createClientDialog();
+  }
+
+  search.onkeyup = async function (event) {
+    let query = event.target.value;
+    if (query.toUpperCase() === "Jésus".toUpperCase()) {
+      // Jésus ? Easter egg time!
+      easterEgg();
     }
-
-    search.onkeyup = async function(event) {
-        let query = event.target.value;
-        if(query.toUpperCase() === "Jésus".toUpperCase()) {
-          // Jésus ? Easter egg time!
-          easterEgg();
-        }
-        if (query.length > 0) {
-          tsms.clients = await getClients('?q=' + query);
-          updateClientList();
-        } else {
-          tsms.clients = await getClients();
-          updateClientList();
-        } 
+    if (query.length > 0) {
+      tsms.clients = await getClients('?q=' + query);
+      updateClientList();
+    } else {
+      tsms.clients = await getClients();
+      updateClientList();
     }
+  }
 
-    tsms.clients = await getClients();
-    updateClientList();
+  tsms.clients = await getClients();
+  updateClientList();
 
-    initModal();
+  initModal();
 });
 
 async function getClients(query = '') {
@@ -54,13 +54,21 @@ function initModal() {
   const btnNameInput = modalBody.querySelector('.btn-name-input');
   const btnNameSave = modalBody.querySelector('.btn-name-save');
   const btnNameCancel = modalBody.querySelector('.btn-name-cancel');
+  const clientIdInput = modalBody.querySelector('#clientId')
   const nameInput = modal.querySelector('.name-input');
+  const btnAddDepot = modal.querySelector("#create-depot");
 
-  close.onclick = function() {
-      modal.style.display = "none";
+  btnAddDepot.onclick = function () {
+    const tblDepots = modalBody.querySelector('table.depots tbody');
+
+    tblDepots.innerHTML = "<tr><td></td><td></td><td></td><td></td><td></td></tr>" + tblDepots.innerHTML;
   }
 
-  const fnCloseNameEdit = function() {
+  close.onclick = function () {
+    modal.style.display = "none";
+  }
+
+  const fnCloseNameEdit = function () {
     btnNameInput.style.display = "block"
     nameSpan.style.display = "block"
     nameInput.style.display = "none"
@@ -68,7 +76,7 @@ function initModal() {
     btnNameCancel.style.display = "none";
   };
 
-  btnNameInput.onclick = function() {
+  btnNameInput.onclick = function () {
     btnNameInput.style.display = "none"
     nameSpan.style.display = "none"
     nameInput.style.display = "block"
@@ -76,78 +84,166 @@ function initModal() {
     btnNameCancel.style.display = "inline-block";
   }
 
-  btnNameCancel.onclick = function() {
+  btnNameCancel.onclick = function () {
     fnCloseNameEdit();
   }
 
-  btnNameSave.onclick = function() {
-    // TODO get id
-    // client = await callApi('clients/' + id + '?_embed=depots', 'POST');
+  btnNameSave.onclick = async function () {
+    // TODO Adjust is new client
+    const nextId = await getNextClientId();
+
+    const id = clientIdInput.value;
+    const name = nameInput.value;
+    const client = { "id": id, "name": name };
+    let response = await callApi('clients/' + id, 'PUT', client);
+    nameSpan.innerHTML = name;
+    const listeClients = document.getElementById('liste-clients');
+    const listClientLink = listeClients.querySelector("[data-id='" + id + "']");
+    listClientLink.innerHTML = name;
     fnCloseNameEdit();
   }
 }
 
 function updateClientList() {
-    if( Array.isArray(tsms.clients) ) {
-        let html = "";
-        tsms.clients.forEach(function(client) {
-            console.log(client.name);
-            html += "<li class=\"list-group-item\"><a href=\"javascript:void(0);\" data-id=\"" + client.id + "\">" + client.name + "</a></li>";
-        });
-        let listeClients = document.getElementById('liste-clients');
-        listeClients.innerHTML = html;
+  if (Array.isArray(tsms.clients)) {
+    let html = "";
+    tsms.clients.forEach(function (client) {
+      console.log(client.name);
+      html += `<li class="list-group-item"><h5 class="my-1"><a href="javascript:void(0);" data-id="${client.id}">${client.name}</a></h5></li>`;
+    });
+    const listeClients = document.getElementById('liste-clients');
+    listeClients.innerHTML = html;
 
-        let links = listeClients.querySelectorAll('a');
+    let links = listeClients.querySelectorAll('a');
 
-        for (let i = 0; i < links.length; i++) {
-            links[i].addEventListener("click", async function() {
-                const id = links[i].dataset.id;
+    for (let i = 0; i < links.length; i++) {
+      links[i].addEventListener("click", async function () {
+        const id = links[i].dataset.id;
 
-                clientDialog(id);
-            });
-        }
+        clientDialog(id);
+      });
     }
+  }
 }
 
 function createClientDialog() {
-    clientDialog(0);
+  clientDialog('new');
 }
 
 async function getNextClientId() {
-  if(tsms.lastQuery != '') {
+  if (tsms.lastQuery != '') {
     tsms.clients = await getClients();
   }
   return tsms.clients.length++;
 }
 
 async function clientDialog(id) {
-    let client
-    if(id == 0) {
-      const nextId = await getNextClientId();
-      client = { "id": nextId, "name": "", "depots": [] };
+  let client
+  if (id == 'new') {
+    client = { "id": id, "name": "", "depots": [] };
+  } else {
+    client = await callApi('clients/' + id);
+    client.depots = await callApi('depots?clientId=' + id + '&_sort=dateDepot&_order=desc');
+  }
+
+  setIdField(client.id);
+  setNameField(client.name);
+
+  const modal = document.getElementById("tsmsModal");
+  const depots = modal.querySelector('.depots tbody');
+
+  let depotsHtml = '';
+  client.depots.forEach(function (depot) {
+    let etat;
+    if (depot.deduit) {
+      etat = `<span class="badge bg-primary rounded-pill">Déduit</span>`;
+    } else if (depot.perdu) {
+      etat = `<span class="badge bg-primary rounded-pill">Perdu</span>`;
     } else {
-      client = await callApi('clients/' + id + '?_embed=depots');
+      etat = `<span class="badge bg-warning text-dark rounded-pill">En attente</span>`;
     }
+    const btnEditHtml = `<button class="btn-edit-depot btn btn-outline-primary" title="Modifier"><i class="bi bi-pencil"></i></button>`;
+    const btnDeleteHtml = `<button class="btn-delete-depot btn btn-outline-primary" title="Supprimer"><i class="bi bi-trash"></i></button>`;
+    const btnSaveHtml = `<button class="d-none btn-save-depot btn btn-outline-primary" title="Sauvegarder"><i class="bi bi-save"></i></button>`;
+    const btnCancelHtml = `<button class="d-none btn-cancel-depot btn btn-outline-primary" title="Annuler"><i class="bi bi-x-lg"></i></button>`;
+    const btnGroup = `<div class="btn-group" role="group">${btnEditHtml}${btnDeleteHtml}${btnSaveHtml}${btnCancelHtml}</div>`;
+    depotsHtml += `<tr><td class="dateDepot">${depot.dateDepot}</td><td class="montant">${depot.montant}</td><td class="etat">${etat}</td><td class="dateEtat">${depot.dateEtat}</td><td class="actions">${btnGroup}</td></tr>`;
+  });
+  depots.innerHTML = depotsHtml;
 
-    setIdField(client.id);
-    setNameField(client.name);
-
-    const modal = document.getElementById("tsmsModal");
-    const depots = modal.querySelector('.depots');
-
-    let depotsHtml = '';
-    client.depots.forEach(function(depot) {
-        let etat;
-        if( depot.deduit ){
-            etat =`<span class="badge bg-primary rounded-pill">Déduit</span>`;
-        } else if( depot.perdu ) {
-            etat =`<span class="badge bg-primary rounded-pill">Perdu</span>`;
-        }
-        depotsHtml += `<li class="list-group-item d-flex justify-content-between align-items-start"><div class="ms-2 me-auto"><div>${depot.date}</div>${depot.montant}$</div>${etat}</li>`;
+  const editDepotBtns = depots.querySelectorAll('.btn-edit-depot');
+  for (i = 0; i < editDepotBtns.length; i++) {
+    editDepotBtns[i].addEventListener('click', function () {
+      editRowDepot(this.closest('tr'));
     });
-    depots.innerHTML = depotsHtml;
+  }
 
-    modal.style.display = "block";
+  modal.style.display = "block";
+}
+
+function hide() {
+  for (var i = 0; i < arguments.length; i++) {
+    arguments[i].classList.add('d-none');
+  }
+}
+
+function show() {
+  for (var i = 0; i < arguments.length; i++) {
+    arguments[i].classList.remove('d-none');
+  }
+}
+
+function saveRowDepot(row) {
+  let depot = {};
+  const cells = row.querySelectorAll('td');
+  for (i = 0; i < cells.length; i++) {
+    if (cells[i].classList.contains('dateDepot')) {
+      depot.dateDepot = cells[i].querySelector('input').value;
+    } else if (cells[i].classList.contains('montant')) {
+      depot.montant = cells[i].querySelector('input').value;
+    }
+  }
+}
+
+function editRowDepot(row) {
+  const cells = row.querySelectorAll('td');
+  for (i = 0; i < cells.length; i++) {
+    const value = cells[i].innerHTML;
+    if (cells[i].classList.contains('montant')) {
+      cells[i].innerHTML = `<input type="number" />`;
+    } else if (cells[i].classList.contains('etat')) {
+      const etat = cells[i].querySelector('.badge').innerHTML;
+      // cells[i].innerHTML = `<select><option>En attente</option><option>Déduit</option><option>Perdu</option></select>`;
+      cells[i].innerHTML = getSelectEtat(etat);
+    } else if (cells[i].classList.contains('actions')) {
+      const editBtn = cells[i].querySelector('.btn-edit-depot');
+      const deleteBtn = cells[i].querySelector('.btn-delete-depot');
+      const saveBtn = cells[i].querySelector('.btn-save-depot');
+      const cancelBtn = cells[i].querySelector('.btn-cancel-depot');
+      hide(editBtn, deleteBtn);
+      show(saveBtn, cancelBtn);
+    } else {
+      cells[i].innerHTML = `<input type="text" />`;
+    }
+    const input = cells[i].querySelector('input');
+    if (input) {
+      input.value = value;
+      input.style.width = '100%';
+    }
+  }
+}
+
+function getSelectEtat(etat) {
+  let html = '<select>';
+  ['En attente', 'Déduit', 'Perdu'].forEach(function (optionValue) {
+    let selected = '';
+    if (optionValue === etat) {
+      selected = ' selected';
+    }
+    html += `<option${selected}>${optionValue}</option>`;
+  });
+  html += `</select>`;
+  return html;
 }
 
 function setIdField(clientId) {
@@ -165,31 +261,36 @@ function setNameField(clientName) {
   const nameInput = modal.querySelector('.name-input');
 
   nameSpan.innerHTML = clientName;
+  nameInput.value = clientName;
   if (clientName == "") {
-      nameInput.style.display = "block";
-      btnNameInput.style.display = "none"
-      btnNameSave.style.display = "inline-block";
-      nameSpan.style.display = "block"
+    nameInput.style.display = "block";
+    btnNameInput.style.display = "none"
+    btnNameSave.style.display = "inline-block";
+    nameSpan.style.display = "block"
   } else {
-      nameInput.style.display = "none";
-      btnNameInput.style.display = "block"
-      nameInput.value = clientName;
-      btnNameSave.style.display = "none";
-      btnNameCancel.style.display = "none";
+    nameInput.style.display = "none";
+    btnNameInput.style.display = "block"
+    btnNameSave.style.display = "none";
+    btnNameCancel.style.display = "none";
   }
 }
 
-async function callApi(path, method = 'GET') {
-  let response = await fetch("http://api.tsms.tattoo:3000/" + path, {
+async function callApi(path, method = 'GET', payload) {
+  let requestOptions = {
     method: method,
     mode: 'cors',
     headers: {
-        'Access-Control-Allow-Origin':'*'
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'application/json'
     }
-  });
+  };
+  if (method === 'POST' || method === 'PUT') {
+    requestOptions.body = JSON.stringify(payload);
+  }
+  let response = await fetch("http://api.tsms.tattoo:3000/" + path, requestOptions);
 
   if (!response.ok) {
-      throw new Error(`Erreur HTTP ! statut : ${response.status}`);
+    throw new Error(`Erreur HTTP ! statut : ${response.status}`);
   }
 
   return await response.json();
@@ -322,5 +423,5 @@ function easterEgg() {
         }
       }
     }
-  });   
+  });
 }

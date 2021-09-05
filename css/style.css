@@ -43,3 +43,7 @@
     text-decoration: none;
     cursor: pointer;
 }
+
+.modal-body span.name {
+    display: block;
+}
