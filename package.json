@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --ignore 'db.json' server.js",
+    "sass": "node-sass scss/style.scss css/style.css",
     "json-server": "json-server --host api.tsms.tattoo --watch db.json --quiet",
     "http-server": "http-server --cors -a tsms.tattoo -o . --silent",
     "start": "concurrently \"npm run json-server\" \"npm run http-server\""
@@ -23,6 +24,7 @@
     "tsparticles": "^1.34.0"
   },
   "devDependencies": {
+    "node-sass": "^6.0.1",
     "nodemon": "^2.0.12"
   }
 }
