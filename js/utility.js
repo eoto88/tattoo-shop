@@ -10,6 +10,12 @@ export function show() {
     }
 }
 
+export function uuidv4() {
+    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+    );
+}
+
 /**
  * 
  * @param {*} path 
@@ -35,15 +41,7 @@ export async function callApi(path, method = 'GET', payload) {
         throw new Error(`Erreur HTTP ! statut : ${response.status}`);
     }
 
-    if(response.headers.get('X-Total-Count')) {
-        return {
-            'count': response.headers.get('X-Total-Count'),
-            'clients': await response.json()
-        };
-    } else {
-        return await response.json();
-    }
-
+    return await response.json();
 }
 
 export function easterEgg() {

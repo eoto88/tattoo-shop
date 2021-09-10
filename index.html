@@ -45,7 +45,7 @@
     </div> 
   </div>
 
-  <div id="tsmsModal" class="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+  <div id="tsmsClientModal" class="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen-md-down">
       <div class="modal-content">
         <div class="modal-header">
@@ -55,6 +55,7 @@
         <div class="modal-body">
           <div class="container-fluid">
             <input type="hidden" id="clientId" />
+            <input type="hidden" id="clientState" />
             <div class="mb-3 row">
               <div class="col-sm-2">
                 <label for="clientName" class="col-form-label">Nom:</label>
@@ -76,22 +77,40 @@
               </div>
             </div>
 
-            <h2>Dépots</h2>
-            <!-- <ul class="depots list-group"></ul> -->
-            <table id="tblDepots" class="depots table table-striped">
-              <thead>
-                <th>Date du dépot</th>
-                <th>Montant</th>
-                <th>État</th>
-                <th>Date de changement d'état</th>
-                <th>Actions</th>
-              </thead>
-              <tbody></tbody>
-            </table>
+            <div id="tblDepotsWrapper">
+              <h2>Dépots</h2>
+              <table id="tblDepots" class="depots table table-striped">
+                <thead>
+                  <th>Date du dépot</th>
+                  <th>Montant</th>
+                  <th>État</th>
+                  <th>Date de changement d'état</th>
+                  <th>Actions</th>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-primary" id="create-depot">Ajouter un dépot&nbsp;&nbsp;<i class="bi bi-journal-plus"></i></button>
+        </div>
+      </div>
+      <div id="deleteDepotModal" class="modal" tabindex="-1" aria-labelledby="deleteDepotModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="deleteDepotModalLabel"></h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              Êtes-vous sûr de vouloir supprimer ce dépot?
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-primary btn-cancel">Annuler</button>
+              <button class="btn btn-danger btn-delete">Supprimer</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

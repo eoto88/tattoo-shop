@@ -1,12 +1,12 @@
 "use strict";
 
 import { ModalClient } from './modal.js';
-import { List } from './list.js';
+import { ListClients } from './list.js';
 import { easterEgg } from './utility.js'
 
 let tsms = {};
-tsms.clients = [];
-tsms.lastQuery = undefined;
+tsms.listClients = undefined;
+tsms.modalClient = undefined;
 
 function docReady(fn) {
   // see if DOM is already available
@@ -17,7 +17,12 @@ function docReady(fn) {
     document.addEventListener("DOMContentLoaded", fn);
   }
 
-  new ModalClient();
+  tsms.listClients = new ListClients({
+    'onItemClick': openModal
+  });
+  tsms.modalClient = new ModalClient({
+    'onclose': updateList
+  });
 }
 
 docReady(async function () {
@@ -25,7 +30,7 @@ docReady(async function () {
   const btnAddClient = document.getElementById("create-client");
 
   btnAddClient.onclick = function () {
-    ModalClient.open('new');
+    tsms.modalClient.open('new');
   }
 
   search.onkeyup = async function (event) {
@@ -35,19 +40,20 @@ docReady(async function () {
       easterEgg();
     }
     if (query.length > 0) {
-      List.updateList('?q=' + query + '&_limit=10');
+      tsms.listClients.updateList('?q=' + query + '&_limit=10');
     } else {
-      List.updateList('?_limit=10');
+      updateList();
     }
   }
 
-  List.updateList('?_limit=10');
-
+  updateList();
 });
 
-async function getNextClientId() {
-  if (tsms.lastQuery != '') {
-    tsms.clients = await getClients();
-  }
-  return tsms.clients.length + 1;
+function updateList() {
+  // TODO add query
+  tsms.listClients.updateList('?_limit=10');
+}
+
+function openModal(id) {
+  tsms.modalClient.open(id);
 }

@@ -1,19 +1,18 @@
 import { ModalClient } from './modal.js';
 import { callApi } from './utility.js'
 
-export class List {
-    constructor() {
+export class ListClients {
+    constructor(options) {
         this.clients = [];
-        this.totalClients = 0;
+
+        this.onItemClick = options.onItemClick
     }
 
-    static async updateClients(query = '') {
-        const response = await callApi('clients' + query);
-        this.clients = response.clients;
-        this.totalClients = response.count;
+    async updateClients(query = '') {
+        this.clients = await callApi('clients' + query);
     }
 
-    static async updateList(query = '') {
+    async updateList(query = '') {
         await this.updateClients(query);
         let html = "";
         this.clients.forEach(function (client) {
@@ -26,10 +25,11 @@ export class List {
         let links = listeClients.querySelectorAll('a');
 
         for (let i = 0; i < links.length; i++) {
+            const me = this;
             links[i].addEventListener("click", async function () {
                 const id = links[i].dataset.id;
 
-                ModalClient.open(id);
+                me.onItemClick(id);
             });
         }
     }

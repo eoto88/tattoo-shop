@@ -10,13 +10,12 @@ export class BadgeEtat {
     }
 
     static getBadgeFromDepot(depot) {
-        let badge;
         if (depot.deduit) {
-            badge = `<span class="badge bg-primary rounded-pill">Déduit</span>`;
+            return `<span class="badge bg-primary rounded-pill">Déduit</span>`;
         } else if (depot.perdu) {
-            badge = `<span class="badge bg-primary rounded-pill">Perdu</span>`;
+            return `<span class="badge bg-primary rounded-pill">Perdu</span>`;
         } else {
-            badge = `<span class="badge bg-warning text-dark rounded-pill">En attente</span>`;
+            return `<span class="badge bg-warning text-dark rounded-pill">En attente</span>`;
         }
     }
 }
