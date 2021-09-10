@@ -1,9 +1,7 @@
+import { BadgeEtat } from './badge-etat.js';
 import { hide, show } from './utility.js'
 
 export class TableDepots {
-    constructor() {
-        
-    }
 
     static getTable() {
         return document.querySelector('#tblDepots tbody');
@@ -14,20 +12,13 @@ export class TableDepots {
 
         let depotsHtml = '';
         clientDepots.forEach(function (depot) {
-            let etat;
-            if (depot.deduit) {
-                etat = `<span class="badge bg-primary rounded-pill">Déduit</span>`;
-            } else if (depot.perdu) {
-                etat = `<span class="badge bg-primary rounded-pill">Perdu</span>`;
-            } else {
-                etat = `<span class="badge bg-warning text-dark rounded-pill">En attente</span>`;
-            }
+            const badgeEtat = BadgeEtat.getBadgeFromDepot(depot);
             const btnEditHtml = `<button class="btn-edit-depot btn btn-outline-primary" title="Modifier"><i class="bi bi-pencil"></i></button>`;
             const btnDeleteHtml = `<button class="btn-delete-depot btn btn-outline-primary" title="Supprimer"><i class="bi bi-trash"></i></button>`;
             const btnSaveHtml = `<button class="d-none btn-save-depot btn btn-outline-primary" title="Sauvegarder"><i class="bi bi-save"></i></button>`;
             const btnCancelHtml = `<button class="d-none btn-cancel-depot btn btn-outline-primary" title="Annuler"><i class="bi bi-x-lg"></i></button>`;
             const btnGroup = `<div class="btn-group" role="group">${btnEditHtml}${btnDeleteHtml}${btnSaveHtml}${btnCancelHtml}</div>`;
-            depotsHtml += `<tr><td class="dateDepot">${depot.dateDepot}</td><td class="montant">${depot.montant}</td><td class="etat">${etat}</td><td class="dateEtat">${depot.dateEtat}</td><td class="actions">${btnGroup}</td></tr>`;
+            depotsHtml += `<tr><td class="dateDepot">${depot.dateDepot}</td><td class="montant">${depot.montant}</td><td class="etat">${badgeEtat}</td><td class="dateEtat">${depot.dateEtat}</td><td class="actions">${btnGroup}</td></tr>`;
         });
         tblDepots.innerHTML = depotsHtml;
 
@@ -121,8 +112,7 @@ export class TableDepots {
                 cells[i].innerHTML = value;
             } else if (cells[i].classList.contains('etat')) {
                 const value = cells[i].querySelector('select').value;
-                cells[i].innerHTML = TableDepots.getEtatBadge(value);
-                // TODO Badge
+                cells[i].innerHTML = BadgeEtat.getBadgeFromEtat(value);
             } else if (cells[i].classList.contains('actions')) {
                 const editBtn = cells[i].querySelector('.btn-edit-depot');
                 const deleteBtn = cells[i].querySelector('.btn-delete-depot');
@@ -147,26 +137,5 @@ export class TableDepots {
         this.removeListeners();
         const tblDepots = this.getTable();
         tblDepots.innerHTML = '';
-    }
-
-    static getEtatBadge(etat) {
-        if(etat == "En attente") {
-            return `<span class="badge bg-warning text-dark rounded-pill">En attente</span>`;
-        } else if(etat == "Perdu") {
-            return `<span class="badge bg-primary rounded-pill">Perdu</span>`;
-        } else {
-            return `<span class="badge bg-primary rounded-pill">Déduit</span>`;
-        }
-    }
-
-    static getBadge(depot) {
-        let badge;
-        if (depot.deduit) {
-            badge = `<span class="badge bg-primary rounded-pill">Déduit</span>`;
-        } else if (depot.perdu) {
-            badge = `<span class="badge bg-primary rounded-pill">Perdu</span>`;
-        } else {
-            badge = `<span class="badge bg-warning text-dark rounded-pill">En attente</span>`;
-        }
     }
 }
