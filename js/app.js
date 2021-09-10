@@ -1,3 +1,5 @@
+"use strict";
+
 import { ModalClient } from './modal.js';
 import { List } from './list.js';
 import { easterEgg } from './utility.js'
