@@ -1,4 +1,4 @@
-import { ModalClient } from './modal.js';
+import { ModalClient } from './modal-client.js';
 import { callApi } from './utility.js'
 
 export class ListClients {

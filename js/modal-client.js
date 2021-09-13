@@ -1,14 +1,18 @@
+import { Modal } from './modal.js'
 import { hide, show, callApi, uuidv4 } from './utility.js'
 import { TableDepots } from './table.js';
-
-export class ModalClient {
+export class ModalClient extends Modal {
     constructor(options) {
+
+        super(document.getElementById('tsmsClientModal'), options);
+
+        const dialog = this.getDialog();
+
         this.existingState = 'existing';
         this.newState = 'new';
 
         this.onClose = options.onClose;
 
-        const dialog = this.getDialog();
         this.closeBtn = dialog.querySelector('.btn-close');
         this.editNameBtn = dialog.querySelector('.btn-name-input');
         this.cancelEditNameBtn = dialog.querySelector('.btn-name-cancel');
@@ -95,19 +99,13 @@ export class ModalClient {
         this.setStateField(state);
         this.setIdField(client.id);
         this.setNameField(client.name);
-
-        const modal = document.getElementById("tsmsClientModal");
-
-        modal.style.display = "block";
+        super.open();
     }
 
     close() {
-        if(this.onClose) {
-            this.onClose();
-        }
         this.tableDepots.close();
         const dialog = this.getDialog();
-        dialog.style.display = 'none';
+        super.close();
     }
 
     editName() {

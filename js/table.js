@@ -1,8 +1,10 @@
 import { BadgeEtat } from './badge-etat.js';
 import { hide, show, callApi, uuidv4 } from './utility.js'
+import { ModalDepot } from './modal-depot.js';
 
 export class TableDepots {
     constructor(options) {
+        this.modalDepot = new ModalDepot(document.getElementById('tsmsDepotModal'));
     }
 
     getTable() {
@@ -59,7 +61,7 @@ export class TableDepots {
         const deleteDepotBtn = row.querySelector('.btn-delete-depot');
         // TODO save button
 
-        editDepotBtn.addEventListener('click', this.editRowDepot);
+        editDepotBtn.addEventListener('click', this.editRowDepot.bind(this));
         cancelDepotBtn.addEventListener('click', this.closeEditRowDepot);
         deleteDepotBtn.addEventListener('click', this.deleteRowDepot);
     }
@@ -84,7 +86,10 @@ export class TableDepots {
         deleteDepotBtn.removeEventListener('click', this.deleteRowDepot);
     }
 
-    editRowDepot(event) {
+    editRowDepot(event, caller) {
+        this.modalDepot.open();
+
+
         const row = event.target.closest('tr');
         const cells = row.querySelectorAll('td');
         for (let i = 0; i < cells.length; i++) {
