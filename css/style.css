@@ -1,3 +1,6 @@
+#tsmsClientModal .modal-dialog {
+  min-width: 800px; }
+
 .modal {
   -webkit-transition: all ease 0.01s;
   -moz-transition: all ease 0.01s;

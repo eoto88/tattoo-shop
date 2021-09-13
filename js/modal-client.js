@@ -1,5 +1,6 @@
 import { hide, show, callApi, uuidv4 } from './utility.js'
 import { TableDepots } from './table.js';
+
 export class ModalClient {
     constructor(options) {
         this.existingState = 'existing';
@@ -64,11 +65,11 @@ export class ModalClient {
         nameSpan.innerHTML = clientName;
         nameInput.value = clientName;
         if (clientName == "") {
-            hide(btnNameInput);
-            show(nameInput, nameSpan, btnNameSave);
+            hide(btnNameInput, nameSpan, btnNameCancel);
+            show(nameInput, btnNameSave);
         } else {
             hide(nameInput, btnNameSave, btnNameCancel);
-            show(btnNameInput);
+            show(btnNameInput, nameSpan);
         }
     }
 
@@ -80,6 +81,7 @@ export class ModalClient {
             client = { "id": uuidv4(), "name": "", "depots": [] };
 
             this.tableDepots.hide();
+            hide(this.addDepotBtn);
         } else {
             state = this.existingState;
             client = await callApi('clients/' + id);
@@ -87,6 +89,7 @@ export class ModalClient {
 
             this.tableDepots.load(client.depots);
             this.tableDepots.show();
+            show(this.addDepotBtn);
         }
 
         this.setStateField(state);
@@ -150,6 +153,7 @@ export class ModalClient {
         if (response) {
             this.setStateField(this.existingState);
             this.tableDepots.show();
+            show(this.addDepotBtn);
         }
 
         // TODO Update client state if success

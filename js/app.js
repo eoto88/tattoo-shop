@@ -1,6 +1,6 @@
 "use strict";
 
-import { ModalClient } from './modal.js';
+import { ModalClient } from './modal-client.js';
 import { ListClients } from './list.js';
 import { easterEgg } from './utility.js'
 
@@ -21,7 +21,7 @@ function docReady(fn) {
     'onItemClick': openModal
   });
   tsms.modalClient = new ModalClient({
-    'onclose': updateList
+    'onClose': updateList
   });
 }
 

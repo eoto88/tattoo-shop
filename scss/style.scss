@@ -6,6 +6,10 @@
 	transition: $val;
 }
 
+#tsmsClientModal .modal-dialog {
+    min-width: 800px;
+}
+
 .modal {
     @include transition(all ease 0.01s);
 

@@ -219,7 +219,7 @@ export class TableDepots {
     }
 
     close() {
-        this.removeListeners();
+        // this.removeListeners();
         const tblDepots = this.getTBody();
         tblDepots.innerHTML = '';
     }
