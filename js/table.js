@@ -5,6 +5,7 @@ import { ModalDepot } from './modal-depot.js';
 export class TableDepots {
     constructor(options) {
         this.modalDepot = new ModalDepot(document.getElementById('tsmsDepotModal'));
+        this.clientDepots = [];
     }
 
     getTable() {
@@ -16,6 +17,7 @@ export class TableDepots {
     }
 
     load(clientDepots) {
+        this.clientDepots = clientDepots;
         const tblDepots = this.getTBody();
 
         let depotsHtml = '';
@@ -86,35 +88,39 @@ export class TableDepots {
         deleteDepotBtn.removeEventListener('click', this.deleteRowDepot);
     }
 
-    editRowDepot(event, caller) {
+    editRowDepot(event) {
+        const row = event.target.closest('tr');
+        const id = this.getRowId(row);
+        const depot = this.getDepotById(id);
+        // TODO Get depot
         this.modalDepot.open();
 
 
-        const row = event.target.closest('tr');
-        const cells = row.querySelectorAll('td');
-        for (let i = 0; i < cells.length; i++) {
-            const value = cells[i].innerHTML;
-            if (cells[i].classList.contains('montant')) {
-                cells[i].innerHTML = `<input type="number" />`;
-            } else if (cells[i].classList.contains('etat')) {
-                const etat = cells[i].querySelector('.badge').innerHTML;
-                cells[i].innerHTML = TableDepots.getSelectEtat(etat);
-            } else if (cells[i].classList.contains('actions')) {
-                const editBtn = cells[i].querySelector('.btn-edit-depot');
-                const deleteBtn = cells[i].querySelector('.btn-delete-depot');
-                const saveBtn = cells[i].querySelector('.btn-save-depot');
-                const cancelBtn = cells[i].querySelector('.btn-cancel-depot');
-                hide(editBtn, deleteBtn);
-                show(saveBtn, cancelBtn);
-            } else {
-                cells[i].innerHTML = `<input type="text" />`;
-            }
-            const input = cells[i].querySelector('input');
-            if (input) {
-                input.value = value;
-                input.style.width = '100%';
-            }
-        }
+        // const row = event.target.closest('tr');
+        // const cells = row.querySe.lectorAll('td');
+        // for (let i = 0; i < cells.length; i++) {
+        //     const value = cells[i].innerHTML;
+        //     if (cells[i].classList.contains('montant')) {
+        //         cells[i].innerHTML = `<input type="number" />`;
+        //     } else if (cells[i].classList.contains('etat')) {
+        //         const etat = cells[i].querySelector('.badge').innerHTML;
+        //         cells[i].innerHTML = TableDepots.getSelectEtat(etat);
+        //     } else if (cells[i].classList.contains('actions')) {
+        //         const editBtn = cells[i].querySelector('.btn-edit-depot');
+        //         const deleteBtn = cells[i].querySelector('.btn-delete-depot');
+        //         const saveBtn = cells[i].querySelector('.btn-save-depot');
+        //         const cancelBtn = cells[i].querySelector('.btn-cancel-depot');
+        //         hide(editBtn, deleteBtn);
+        //         show(saveBtn, cancelBtn);
+        //     } else {
+        //         cells[i].innerHTML = `<input type="text" />`;
+        //     }
+        //     const input = cells[i].querySelector('input');
+        //     if (input) {
+        //         input.value = value;
+        //         input.style.width = '100%';
+        //     }
+        // }
     }
 
     static getSelectEtat(etat) {
@@ -154,7 +160,7 @@ export class TableDepots {
 
         modalTitle.innerHTML = `Dépôt de ${montant}$ du ${depotDate}`
 
-        deleteBtn.onclick = async function() {
+        deleteBtn.onclick = async function () {
             const depotId = TableDepots.getRowId(row)
             let response = await callApi('depots/' + depotId, 'DELETE');
 
@@ -162,10 +168,10 @@ export class TableDepots {
 
             deleteDepotModal.style.display = 'none';
         }
-        cancelBtn.onclick = function() {
+        cancelBtn.onclick = function () {
             deleteDepotModal.style.display = 'none';
         }
-        
+
         deleteDepotModal.style.display = 'block';
     }
 
@@ -197,10 +203,16 @@ export class TableDepots {
         return row.dataset.id;
     }
 
+    getDepotById(id) {
+        return this.clientDepots.filter(obj => {
+            return obj.id === id
+        });
+    }
+
     addRow() {
         const tblDepots = this.getTBody();
         const today = new Date()
-        
+
         const newDepot = {
             "id": uuidv4(),
             "clientId": "658a0633-d750-45ab-928b-71f93d6eb95c",

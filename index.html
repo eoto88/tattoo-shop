@@ -128,9 +128,22 @@
             <label for="dateDepot" class="form-label">Date du dépôt</label>
             <input type="date" class="date-depot-input form-control" id="dateDepot">
           </div>
+          <div class="mb-3">
+            <label for="montantDepot" class="form-label">Montant</label>
+            <input type="number" class="montant-depot-input form-control" id="montantDepot">
+          </div>
+          <div class="mb-3">
+            <label for="etatDepot" class="form-label">État</label>
+            <select class="etat-depot-input form-control" id="etatDepot"></select>
+          </div>
+          <div class="mb-3">
+            <label for="dateChangementDepot" class="form-label">Date de changement d'état</label>
+            <input type="date" class="date-changement-depot-input form-control" id="dateChangementDepot">
+          </div>
         </div>
         <div class="modal-footer">
-
+          <button class="btn btn-secondary btn-cancel">Annuler</button>
+          <button class="btn btn-primary btn-delete">Enregistrer</button>
         </div>
       </div>
     </div>

@@ -3,6 +3,7 @@ import { hide, show } from './utility.js'
 export class Modal {
     constructor(element, options) {
         this.element = element;
+        this.closeBtn = element.querySelector('.btn-close');
         if (options) {
             if (typeof options.onClose  === "function") {
                 this.onClose = options.onClose;
@@ -10,6 +11,14 @@ export class Modal {
             if (typeof options.onOpen === "function") {
                 this.onOpen = options.onOpen;
             }
+        }
+        this.listeners();
+    }
+
+    listeners() {
+        const me = this;
+        this.closeBtn.onclick = function () {
+            me.close();
         }
     }
 

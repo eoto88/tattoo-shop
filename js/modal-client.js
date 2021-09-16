@@ -13,15 +13,7 @@ export class ModalClient extends Modal {
 
         this.onClose = options.onClose;
 
-        this.closeBtn = dialog.querySelector('.btn-close');
-        this.editNameBtn = dialog.querySelector('.btn-name-input');
-        this.cancelEditNameBtn = dialog.querySelector('.btn-name-cancel');
-        this.saveEditNameBtn = dialog.querySelector('.btn-name-save');
-        this.addDepotBtn = dialog.querySelector("#create-depot");
-
         this.tableDepots = new TableDepots();
-
-        this.listeners();
     }
 
     getDialog() {
@@ -29,20 +21,25 @@ export class ModalClient extends Modal {
     }
 
     listeners() {
-        let me = this;
-        this.closeBtn.onclick = function () {
-            me.close();
-        }
-        this.editNameBtn.onclick = function () {
+        super.listeners();
+
+        const me = this;
+        const dialog = this.getDialog();
+        const editNameBtn = dialog.querySelector('.btn-name-input');
+        const cancelEditNameBtn = dialog.querySelector('.btn-name-cancel');
+        const saveEditNameBtn = dialog.querySelector('.btn-name-save');
+        const addDepotBtn = dialog.querySelector("#create-depot");
+
+        editNameBtn.onclick = function () {
             me.editName();
         }
-        this.cancelEditNameBtn.onclick = function () {
+        cancelEditNameBtn.onclick = function () {
             me.closeEditName();
         }
-        this.saveEditNameBtn.onclick = async function () {
+        saveEditNameBtn.onclick = async function () {
             me.saveEditName();
         }
-        this.addDepotBtn.onclick = function () {
+        addDepotBtn.onclick = function () {
             me.addDepot();
         }
     }
@@ -93,7 +90,10 @@ export class ModalClient extends Modal {
 
             this.tableDepots.load(client.depots);
             this.tableDepots.show();
-            show(this.addDepotBtn);
+
+            const dialog = this.getDialog();
+            const addDepotBtn = dialog.querySelector("#create-depot");
+            show(addDepotBtn);
         }
 
         this.setStateField(state);
