@@ -5,12 +5,11 @@ import { ModalDepot } from './modal-depot.js';
 export class TableDepots {
     constructor(options) {
         const modalDepotOptions = {
-            'onSave': function() {
-                alert('TODO reload')
-            }
+            'onSave': this.reload.bind(this)
         }
         this.modalDepot = new ModalDepot(modalDepotOptions);
         this.clientDepots = [];
+        this.clientId = 0;
     }
 
     getTable() {
@@ -21,7 +20,14 @@ export class TableDepots {
         return this.getTable().querySelector('tbody');
     }
 
-    load(clientDepots) {
+    async reload() {
+        await this.load(this.clientId)
+    }
+
+    async load(clientId) {
+        this.clientId = clientId
+        const clientDepots = await callApi('depots?clientId=' + clientId + '&_sort=dateDepot&_order=desc');
+
         this.clientDepots = clientDepots;
         const tblDepots = this.getTBody();
 
@@ -65,7 +71,7 @@ export class TableDepots {
         const deleteDepotBtn = row.querySelector('.btn-delete-depot');
 
         editDepotBtn.addEventListener('click', this.editRowDepot.bind(this));
-        deleteDepotBtn.addEventListener('click', this.deleteRowDepot);
+        deleteDepotBtn.addEventListener('click', this.deleteRowDepot.bind(this));
     }
 
     removeListeners() {
@@ -132,8 +138,9 @@ export class TableDepots {
 
         modalTitle.innerHTML = `Dépôt de ${montant}$ du ${depotDate}`
 
+        const me = this
         deleteBtn.onclick = async function () {
-            const depotId = TableDepots.getRowId(row)
+            const depotId = me.getRowId(row)
             let response = await callApi('depots/' + depotId, 'DELETE');
 
             row.remove();

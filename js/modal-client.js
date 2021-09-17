@@ -88,9 +88,8 @@ export class ModalClient extends Modal {
         } else {
             state = this.existingState;
             client = await callApi('clients/' + id);
-            client.depots = await callApi('depots?clientId=' + id + '&_sort=dateDepot&_order=desc');
 
-            this.tableDepots.load(client.depots);
+            this.tableDepots.load(id);
             this.tableDepots.show();
 
             const dialog = this.getDialog();
