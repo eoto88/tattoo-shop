@@ -2,6 +2,9 @@ import { hide, show } from './utility.js'
 
 export class Modal {
     constructor(element, options) {
+        this.existingState = 'existing';
+        this.newState = 'new';
+
         this.element = element;
         this.closeBtn = element.querySelector('.btn-close');
         if (options) {
@@ -16,10 +19,7 @@ export class Modal {
     }
 
     listeners() {
-        const me = this;
-        this.closeBtn.onclick = function () {
-            me.close();
-        }
+        this.closeBtn.addEventListener('click', this.close.bind(this))
     }
 
     open() {

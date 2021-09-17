@@ -8,9 +8,6 @@ export class ModalClient extends Modal {
 
         const dialog = this.getDialog();
 
-        this.existingState = 'existing';
-        this.newState = 'new';
-
         this.onClose = options.onClose;
 
         this.tableDepots = new TableDepots();
@@ -52,6 +49,11 @@ export class ModalClient extends Modal {
     setIdField(clientId) {
         const idInput = document.getElementById('clientId');
         idInput.value = clientId;
+    }
+
+    getClientId() {
+        const idInput = document.getElementById('clientId')
+        return idInput.value
     }
 
     setNameField(clientName) {
@@ -152,6 +154,8 @@ export class ModalClient extends Modal {
             this.setStateField(this.existingState);
             this.tableDepots.show();
             show(this.addDepotBtn);
+        } else {
+            alert('error')
         }
 
         // TODO Update client state if success
@@ -168,6 +172,7 @@ export class ModalClient extends Modal {
     }
 
     addDepot() {
-        this.tableDepots.addRow();
+        const clientId = this.getClientId();
+        this.tableDepots.addDepot(clientId);
     }
 }

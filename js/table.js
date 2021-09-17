@@ -4,7 +4,12 @@ import { ModalDepot } from './modal-depot.js';
 
 export class TableDepots {
     constructor(options) {
-        this.modalDepot = new ModalDepot(document.getElementById('tsmsDepotModal'));
+        const modalDepotOptions = {
+            'onSave': function() {
+                alert('TODO reload')
+            }
+        }
+        this.modalDepot = new ModalDepot(modalDepotOptions);
         this.clientDepots = [];
     }
 
@@ -31,12 +36,10 @@ export class TableDepots {
     }
 
     formatRow(depot) {
-        const badgeEtat = BadgeEtat.getBadgeFromDepot(depot);
+        const badgeEtat = BadgeEtat.getBadge(depot.etat);
         const btnEditHtml = `<button class="btn-edit-depot btn btn-outline-primary" title="Modifier"><i class="bi bi-pencil"></i></button>`;
         const btnDeleteHtml = `<button class="btn-delete-depot btn btn-outline-primary" title="Supprimer"><i class="bi bi-trash"></i></button>`;
-        const btnSaveHtml = `<button class="d-none btn-save-depot btn btn-outline-primary" title="Sauvegarder"><i class="bi bi-save"></i></button>`;
-        const btnCancelHtml = `<button class="d-none btn-cancel-depot btn btn-outline-primary" title="Annuler"><i class="bi bi-x-lg"></i></button>`;
-        const btnGroup = `<div class="btn-group" role="group">${btnEditHtml}${btnDeleteHtml}${btnSaveHtml}${btnCancelHtml}</div>`;
+        const btnGroup = `<div class="btn-group" role="group">${btnEditHtml}${btnDeleteHtml}</div>`;
         return `<tr data-id="${depot.id}"><td class="dateDepot">${depot.dateDepot}</td><td class="montant">${depot.montant}</td><td class="etat">${badgeEtat}</td><td class="dateEtat">${depot.dateEtat}</td><td class="actions">${btnGroup}</td></tr>`;
     }
 
@@ -59,12 +62,9 @@ export class TableDepots {
 
     addRowListeners(row) {
         const editDepotBtn = row.querySelector('.btn-edit-depot');
-        const cancelDepotBtn = row.querySelector('.btn-cancel-depot');
         const deleteDepotBtn = row.querySelector('.btn-delete-depot');
-        // TODO save button
 
         editDepotBtn.addEventListener('click', this.editRowDepot.bind(this));
-        cancelDepotBtn.addEventListener('click', this.closeEditRowDepot);
         deleteDepotBtn.addEventListener('click', this.deleteRowDepot);
     }
 
@@ -92,35 +92,7 @@ export class TableDepots {
         const row = event.target.closest('tr');
         const id = this.getRowId(row);
         const depot = this.getDepotById(id);
-        // TODO Get depot
-        this.modalDepot.open();
-
-
-        // const row = event.target.closest('tr');
-        // const cells = row.querySe.lectorAll('td');
-        // for (let i = 0; i < cells.length; i++) {
-        //     const value = cells[i].innerHTML;
-        //     if (cells[i].classList.contains('montant')) {
-        //         cells[i].innerHTML = `<input type="number" />`;
-        //     } else if (cells[i].classList.contains('etat')) {
-        //         const etat = cells[i].querySelector('.badge').innerHTML;
-        //         cells[i].innerHTML = TableDepots.getSelectEtat(etat);
-        //     } else if (cells[i].classList.contains('actions')) {
-        //         const editBtn = cells[i].querySelector('.btn-edit-depot');
-        //         const deleteBtn = cells[i].querySelector('.btn-delete-depot');
-        //         const saveBtn = cells[i].querySelector('.btn-save-depot');
-        //         const cancelBtn = cells[i].querySelector('.btn-cancel-depot');
-        //         hide(editBtn, deleteBtn);
-        //         show(saveBtn, cancelBtn);
-        //     } else {
-        //         cells[i].innerHTML = `<input type="text" />`;
-        //     }
-        //     const input = cells[i].querySelector('input');
-        //     if (input) {
-        //         input.value = value;
-        //         input.style.width = '100%';
-        //     }
-        // }
+        this.modalDepot.open(depot);
     }
 
     static getSelectEtat(etat) {
@@ -184,7 +156,7 @@ export class TableDepots {
                 cells[i].innerHTML = value;
             } else if (cells[i].classList.contains('etat')) {
                 const value = cells[i].querySelector('select').value;
-                cells[i].innerHTML = BadgeEtat.getBadgeFromEtat(value);
+                // cells[i].innerHTML = BadgeEtat.getBadgeEtat(value);
             } else if (cells[i].classList.contains('actions')) {
                 const editBtn = cells[i].querySelector('.btn-edit-depot');
                 const deleteBtn = cells[i].querySelector('.btn-delete-depot');
@@ -204,36 +176,49 @@ export class TableDepots {
     }
 
     getDepotById(id) {
-        return this.clientDepots.filter(obj => {
+        return this.clientDepots.find(obj => {
             return obj.id === id
         });
     }
 
-    addRow() {
-        const tblDepots = this.getTBody();
+    addDepot(clientId) {
         const today = new Date()
-
         const newDepot = {
             "id": uuidv4(),
-            "clientId": "658a0633-d750-45ab-928b-71f93d6eb95c",
+            "clientId": clientId,
             "dateDepot": today.toISOString().split('T')[0],
             "montant": "0",
-            "deduit": false,
-            "perdu": false,
+            "etat": "En attente",
             "dateEtat": ""
         }
-
-        // this.removeListeners();
-
-        const row = tblDepots.insertRow(0);
-        const dateDepotCell = row.insertCell(0);
-        const montantCell = row.insertCell(1);
-        const etatCell = row.insertCell(2);
-        const dateChangementCell = row.insertCell(3);
-        const actionsCell = row.insertCell(4);
-
-        // this.listeners();
+        this.modalDepot.open(newDepot, true);
     }
+
+    // addRow() {
+    //     const tblDepots = this.getTBody();
+    //     const today = new Date()
+
+    //     const newDepot = {
+    //         "id": uuidv4(),
+    //         "clientId": "658a0633-d750-45ab-928b-71f93d6eb95c",
+    //         "dateDepot": today.toISOString().split('T')[0],
+    //         "montant": "0",
+    //         "deduit": false,
+    //         "perdu": false,
+    //         "dateEtat": ""
+    //     }
+
+    //     // this.removeListeners();
+
+    //     const row = tblDepots.insertRow(0);
+    //     const dateDepotCell = row.insertCell(0);
+    //     const montantCell = row.insertCell(1);
+    //     const etatCell = row.insertCell(2);
+    //     const dateChangementCell = row.insertCell(3);
+    //     const actionsCell = row.insertCell(4);
+
+    //     // this.listeners();
+    // }
 
     close() {
         // this.removeListeners();
