@@ -189,43 +189,16 @@ export class TableDepots {
     }
 
     addDepot(clientId) {
-        const today = new Date()
         const newDepot = {
             "id": uuidv4(),
             "clientId": clientId,
-            "dateDepot": today.toISOString().split('T')[0],
+            "dateDepot": moment().format('YYYY-MM-DD'),
             "montant": "0",
             "etat": "En attente",
             "dateEtat": ""
         }
         this.modalDepot.open(newDepot, true);
     }
-
-    // addRow() {
-    //     const tblDepots = this.getTBody();
-    //     const today = new Date()
-
-    //     const newDepot = {
-    //         "id": uuidv4(),
-    //         "clientId": "658a0633-d750-45ab-928b-71f93d6eb95c",
-    //         "dateDepot": today.toISOString().split('T')[0],
-    //         "montant": "0",
-    //         "deduit": false,
-    //         "perdu": false,
-    //         "dateEtat": ""
-    //     }
-
-    //     // this.removeListeners();
-
-    //     const row = tblDepots.insertRow(0);
-    //     const dateDepotCell = row.insertCell(0);
-    //     const montantCell = row.insertCell(1);
-    //     const etatCell = row.insertCell(2);
-    //     const dateChangementCell = row.insertCell(3);
-    //     const actionsCell = row.insertCell(4);
-
-    //     // this.listeners();
-    // }
 
     close() {
         // this.removeListeners();

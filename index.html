@@ -149,6 +149,10 @@
             <label for="dateChangementDepot" class="form-label">Date de changement d'état</label>
             <input type="date" class="date-changement-depot-input form-control" id="dateChangementDepot">
           </div>
+          <div class="mb-3">
+            <label for="noteDepot" class="form-label">Note</label>
+            <textarea id="noteDepot" class="note-depot-input form-control"></textarea>
+          </div>
         </div>
         <div class="modal-footer">
           <button class="btn btn-secondary btn-cancel">Annuler</button>
@@ -161,7 +165,7 @@
   <div id="tsparticles"></div>
 
   <script type="module" src="js/app.js"></script>
-  <!-- <script src="js/utility.js"></script> -->
+  <script src="node_modules/moment/min/moment-with-locales.min.js"></script>
   <script src="node_modules/tsparticles/tsparticles.min.js"></script>
 </body>
 

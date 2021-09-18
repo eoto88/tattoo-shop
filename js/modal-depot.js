@@ -13,13 +13,14 @@ export class ModalDepot extends Modal {
         const cancelBtn = this.element.querySelector('.btn-cancel')
         const saveBtn = this.element.querySelector('.btn-save')
 
-        cancelBtn.addEventListener('click', this.close)
+        cancelBtn.addEventListener('click', this.close.bind(this))
         saveBtn.addEventListener('click', this.saveDepot.bind(this))
 
         super.listeners()
     }
 
     open(depot, newDepot = false) {
+        // TODO empty form
         const depotStateInput = this.element.querySelector('.depot-state-input')
         const depotIdInput = this.element.querySelector('.depot-id-input')
         const clientIdInput = this.element.querySelector('.client-id-input')
@@ -27,6 +28,7 @@ export class ModalDepot extends Modal {
         const montantDepotInput = this.element.querySelector('.montant-depot-input')
         const etatDepotInput = this.element.querySelector('.etat-depot-input')
         const dateChangementDepotInput = this.element.querySelector('.date-changement-depot-input')
+        const noteDepotInput = this.element.querySelector('.note-depot-input')
 
         let stateDepot
         if(newDepot) {
@@ -42,6 +44,7 @@ export class ModalDepot extends Modal {
         montantDepotInput.value = depot.montant
         etatDepotInput.value = depot.etat
         dateChangementDepotInput.value = depot.dateEtat
+        noteDepotInput.value = depot.note
 
         super.open()
     }
@@ -55,7 +58,8 @@ export class ModalDepot extends Modal {
             "dateDepot": this.getDateDepot(),
             "montant": this.getMontantDepot(),
             "etat": this.getEtatDepot(),
-            "dateEtat": this.getDateChangementDepot()
+            "dateEtat": this.getDateChangementDepot(),
+            "note": this.getNoteDepot()
         }
 
         let method = 'PUT';
@@ -115,5 +119,10 @@ export class ModalDepot extends Modal {
     getDateChangementDepot() {
         const dateChangementDepotInput = this.element.querySelector('.date-changement-depot-input')
         return dateChangementDepotInput.value || ""
+    }
+
+    getNoteDepot() {
+        const noteDepotInput = this.element.querySelector('.note-depot-input')
+        return noteDepotInput.value || ""
     }
 }
