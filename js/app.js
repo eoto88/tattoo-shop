@@ -2,7 +2,7 @@
 
 import { ModalClient } from './modal-client.js';
 import { ListClients } from './list.js';
-import { easterEgg } from './utility.js'
+import { easterEgg } from './utility.js';
 
 let tsms = {};
 tsms.listClients = undefined;
@@ -40,7 +40,7 @@ docReady(async function () {
       easterEgg();
     }
     if (query.length > 0) {
-      tsms.listClients.updateList('?q=' + query + '&_limit=10');
+      tsms.listClients.updateList(query);
     } else {
       updateList();
     }
@@ -51,7 +51,7 @@ docReady(async function () {
 
 function updateList() {
   // TODO add query
-  tsms.listClients.updateList('?_limit=10');
+  tsms.listClients.updateList();
 }
 
 function openModal(id) {
