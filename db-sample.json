@@ -1,0 +1,106 @@
+{
+  "clients": [
+    {
+      "id": "658a0633-d750-45ab-928b-71f93d6eb95c",
+      "name": "Joe Blo10"
+    },
+    {
+      "id": "868c04f4-d77d-491f-8eaf-924962ad7f5a",
+      "name": "Bob Bobette"
+    },
+    {
+      "id": "ec06f7ac-293b-4396-9ff8-12245a347427",
+      "name": "Jésus de Nazareth"
+    },
+    {
+      "id": "1a6850ad-ece0-44c1-bb4c-472654ea5d42",
+      "name": "Ron Jeremy"
+    },
+    {
+      "id": "71c3a114-25b1-42a6-a6ae-116fafda7474",
+      "name": "Adolf Hilter"
+    },
+    {
+      "id": "49d4ec64-2793-4863-a43c-bd824e512e6b",
+      "name": "Rose Anna Vachon"
+    },
+    {
+      "id": "504e0b5c-e0e3-43e8-9d02-3034c86930fb",
+      "name": "Test12"
+    },
+    {
+      "id": "bb11e913-9956-498c-b0f4-59636d646fd6",
+      "name": "Test 1212"
+    }
+  ],
+  "depots": [
+    {
+      "id": "d5efd074-78cd-480c-a4a4-a452ec8a9648",
+      "clientId": "658a0633-d750-45ab-928b-71f93d6eb95c",
+      "dateDepot": "2019-01-01",
+      "montant": "200",
+      "etat": "Déduit",
+      "dateEtat": "2019-02-01"
+    },
+    {
+      "id": "26982800-bfc5-4811-8301-7f3dc57ea75e",
+      "clientId": "658a0633-d750-45ab-928b-71f93d6eb95c",
+      "dateDepot": "2020-02-01",
+      "montant": "50",
+      "etat": "Perdu",
+      "dateEtat": "2020-03-01"
+    },
+    {
+      "id": "6377c433-511a-4804-8cbe-ff05cc79346f",
+      "clientId": "658a0633-d750-45ab-928b-71f93d6eb95c",
+      "dateDepot": "2021-02-01",
+      "montant": "50",
+      "etat": "Déduit",
+      "dateEtat": "2021-09-17"
+    },
+    {
+      "id": "dc82a2f0-9e45-46bf-b84f-966a2a281cab",
+      "clientId": "658a0633-d750-45ab-928b-71f93d6eb95c",
+      "dateDepot": "2021-09-07",
+      "montant": "30",
+      "etat": "Perdu",
+      "dateEtat": "2021-09-17"
+    },
+    {
+      "id": "86b329f8-faec-4d35-9c78-182a38c5bc88",
+      "clientId": "658a0633-d750-45ab-928b-71f93d6eb95c",
+      "dateDepot": "2021-09-18",
+      "montant": "123",
+      "etat": "En attente",
+      "dateEtat": "",
+      "note": "Projet du ti jésus qui fait du skate"
+    },
+    {
+      "id": "54f8d9d6-8c5d-4085-9905-45159aee7929",
+      "clientId": "658a0633-d750-45ab-928b-71f93d6eb95c",
+      "dateDepot": "2021-09-26",
+      "montant": "25",
+      "etat": "En attente",
+      "dateEtat": "",
+      "note": "Jésus a payer le dépot de Zachée"
+    },
+    {
+      "id": "5d547ffe-5378-4558-8c4b-e9f6e04cdd12",
+      "clientId": "658a0633-d750-45ab-928b-71f93d6eb95c",
+      "dateDepot": "2021-09-26",
+      "montant": "123123",
+      "etat": "En attente",
+      "dateEtat": "",
+      "note": "Balle de tennis"
+    },
+    {
+      "id": "10638c0c-76d2-4fc1-81ac-aeaf9474f242",
+      "clientId": "49d4ec64-2793-4863-a43c-bd824e512e6b",
+      "dateDepot": "2021-09-26",
+      "montant": "100",
+      "etat": "En attente",
+      "dateEtat": "",
+      "note": "undefined"
+    }
+  ]
+}
