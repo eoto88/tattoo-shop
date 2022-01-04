@@ -6,15 +6,32 @@ export class ModalClient extends Modal {
 
         super(document.getElementById('tsmsClientModal'), options);
 
-        const dialog = this.getDialog();
-
         this.onClose = options.onClose;
 
         this.tableDepots = new TableDepots();
+
+        this.addDepotBtn = this.getAddDepotBtn();
+        this.editNameBtn = this.getEditNameBtn();
+        this.cancelEditNameBtn = this.getCancelEditNameBtn();
     }
 
     getDialog() {
         return document.getElementById('tsmsClientModal');
+    }
+
+    getAddDepotBtn() {
+        const dialog = this.getDialog();
+        return dialog.querySelector("#create-depot");
+    }
+
+    getEditNameBtn() {
+        const dialog = this.getDialog();
+        return dialog.querySelector('.btn-name-input');
+    }
+
+    getCancelEditNameBtn() {
+        const dialog = this.getDialog();
+        return dialog.querySelector('.btn-name-cancel');
     }
 
     listeners() {
@@ -22,10 +39,10 @@ export class ModalClient extends Modal {
 
         const me = this;
         const dialog = this.getDialog();
-        const editNameBtn = dialog.querySelector('.btn-name-input');
-        const cancelEditNameBtn = dialog.querySelector('.btn-name-cancel');
+        const editNameBtn = this.getEditNameBtn();
+        const cancelEditNameBtn = this.getCancelEditNameBtn();
         const saveEditNameBtn = dialog.querySelector('.btn-name-save');
-        const addDepotBtn = dialog.querySelector("#create-depot");
+        const addDepotBtn = this.getAddDepotBtn();
 
         editNameBtn.onclick = function () {
             me.editName();
