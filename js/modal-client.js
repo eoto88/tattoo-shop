@@ -1,6 +1,7 @@
 import { Modal } from './modal.js'
-import { hide, show, callApi, uuidv4 } from './utility.js'
+import { hide, show, callApi, uuidv4, removeAccents } from './utility.js'
 import { TableDepots } from './table.js';
+
 export class ModalClient extends Modal {
     constructor(options) {
 
@@ -157,12 +158,13 @@ export class ModalClient extends Modal {
         let id = clientIdInput.value;
         let path = 'clients/' + id;
         const name = nameInput.value;
+        const cleanName = removeAccents(name);
         const clientState = clientStateInput.value;
         if (clientState == this.newState) {
             method = 'POST';
             path = 'clients';
         }
-        const client = { "id": id, "name": name };
+        const client = { "id": id, "name": name, "cleanName": cleanName };
         let response = await callApi(path, method, client);
         nameSpan.innerHTML = name;
 
