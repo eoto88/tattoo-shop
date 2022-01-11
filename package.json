@@ -1,6 +1,6 @@
 {
   "name": "tattoo-shop",
-  "version": "1.0.0",
+  "version": "0.1.2",
   "description": "Tattoo shop management system",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "css": "node-sass scss/style.scss css/style.css",
     "sass": "npm run css && node-sass scss/style.scss -w css/style.css",
     "json-server": "json-server --host api.tsms.tattoo --watch db.json --quiet",
-    "http-server": "http-server --cors -a tsms.tattoo -o . --silent",
+    "http-server": "http-server -c-1 --cors -a tsms.tattoo -o . --silent",
     "start": "concurrently \"npm run json-server\" \"npm run http-server\""
   },
   "type": "module",
