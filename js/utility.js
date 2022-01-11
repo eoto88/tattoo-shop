@@ -16,12 +16,16 @@ export function uuidv4() {
     );
 }
 
+export function removeAccents(str) {
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+}
+
 /**
- * 
- * @param {*} path 
- * @param {*} method 
- * @param {*} payload 
- * @returns 
+ *
+ * @param {*} path
+ * @param {*} method
+ * @param {*} payload
+ * @returns
  */
 export async function callApi(path, method = 'GET', payload) {
     let requestOptions = {
