@@ -8,7 +8,7 @@ export class ListClients {
     }
 
     async updateClients(query = '') {
-        let url = 'clients?_limit=10&_embed=depots';
+        let url = 'clients?_sort=name&_embed=depots';
         if (query != '') {
             url += '&q=' + query;
         }
@@ -33,7 +33,7 @@ export class ListClients {
                         if (moment(depot.dateDepot).isBefore(oldestDepotEnAttente)) {
                             oldestDepotEnAttente = depot.dateDepot
                         }
-                    } 
+                    }
                 }
             });
             if (hasDepotsEnattente) {
