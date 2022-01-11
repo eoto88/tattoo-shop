@@ -6,6 +6,23 @@
 	transition: $val;
 }
 
+html,
+body {
+    height: 100%;
+}
+
+#content {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -60px;
+}
+
+#push,
+#footer {
+    height: 60px;
+}
+
 #tsmsClientModal .modal-dialog {
     min-width: 800px;
 }
