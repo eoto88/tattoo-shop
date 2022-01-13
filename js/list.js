@@ -3,21 +3,75 @@ import { BadgeEtat } from './badge-etat.js';
 export class ListClients {
     constructor(options) {
         this.clients = [];
+        this.query = '';
+        this.count = 0;
+        this.page = 1;
+        this.limit = 10;
 
         this.onItemClick = options.onItemClick
     }
 
-    async updateClients(query = '') {
-        let url = 'clients?_sort=name&_embed=depots';
+    async updateClients(query = '', page = 1) {
+        let url = `clients?_sort=cleanName&_embed=depots&_page=${page}&_limit=10`;
         if (query != '') {
             url += '&q=' + query;
         }
 
-        this.clients = await callApi(url);
+        const response = await callApi(url);
+
+        this.query = query;
+        this.count = parseInt(response.count);
+        this.clients = response.json;
+        this.page = page;
+
+        this.updatePagination();
     }
 
-    async updateList(query = '') {
-        await this.updateClients(query);
+    updatePagination() {
+        const paginationClients = document.getElementById('pagination-clients');
+
+        const nbPages = this.count / this.limit
+
+        let previousDisabled = '';
+        if(this.page == 1) {
+            previousDisabled = 'disabled'
+        }
+        const previousPageNumber = this.page - 1;
+        let html = `<li class="page-item ${previousDisabled}">
+          <a class="page-link" href="javascript:void(0)" data-pagenumber="${previousPageNumber}" aria-label="Précédent">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>`
+        for (let i = 0; i < nbPages; i++) {
+            const pageNumber = i + 1;
+            html += `<li class="page-item"><a class="page-link" href="javascript:void(0)" data-pagenumber="${pageNumber}">${pageNumber}</a></li>`
+        }
+        let nextDisabled = '';
+        if(this.page >= nbPages) {
+            nextDisabled = 'disabled'
+        }
+        const nextPageNumber = this.page + 1;
+        html += `<li class="page-item ${nextDisabled}">
+          <a class="page-link" href="javascript:void(0)" data-pagenumber="${nextPageNumber}" aria-label="Suivant">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>`
+
+        paginationClients.innerHTML = html;
+
+        const paginationLinks = paginationClients.querySelectorAll('.page-link')
+        for (let i = 0; i < paginationLinks.length; i++) {
+            const me = this;
+            paginationLinks[i].addEventListener("click", async function () {
+                const pagenumber = paginationLinks[i].dataset.pagenumber;
+
+                me.updateList(me.query, parseInt(pagenumber));
+            });
+        }
+    }
+
+    async updateList(query = '', page = 1) {
+        await this.updateClients(query, page);
         let html = "";
         this.clients.forEach(function (client) {
             let badgeDepot = '';

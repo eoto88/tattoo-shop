@@ -69,7 +69,7 @@ export class ModalDepot extends Modal {
             path = 'depots';
         }
         let response = await callApi(path, method, depot);
-        
+
         if (response) {
             this.setDepotState(this.existingState);
             if (this.onSave) {

@@ -45,6 +45,14 @@ export async function callApi(path, method = 'GET', payload) {
         throw new Error(`Erreur HTTP ! statut : ${response.status}`);
     }
 
+    const count = response.headers.get('X-Total-Count')
+    if(count) {
+        return {
+            "count": count,
+            "json": await response.json()
+        }
+    }
+
     return await response.json();
 }
 
