@@ -21,7 +21,7 @@ node app.js dev
 - Pouvoir trier par nom, par dépôt en attente ou par date (dernier dépôt ajouté)
 - Cacher le bouton supprimer pour la création d'un client
 - Pop-up si on ajoute un client en double (Empêcher de créer 2 clients avec le même nom)
-- Afficher tout (au lieu de seulement 10) et possibilité de scroller
+- Permettre de changer de mot de passe
 - Afficher le mois en lettres au lieu en chiffre (facultatif)
 - Note undefined par défaut
 - Affichage de clients par ordre alphabétique

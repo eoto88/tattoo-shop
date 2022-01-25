@@ -64,6 +64,7 @@ export async function callApi(path, method = 'GET', payload = {}) {
     const count = response.headers.get('X-Total-Count')
     if(count) {
         return {
+            'status': response.status,
             "count": count,
             "json": await response.json()
         }

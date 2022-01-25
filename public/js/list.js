@@ -161,11 +161,16 @@ export class List {
         this.query = query;
         this.count = parseInt(response.count);
 
-        if(listOf == 'clients') {
-            this.clients = response.json;
+        if(response.status == 403) {
+            this.clients = []
         } else {
-            this.clients = response.json;
+            if(listOf == 'clients') {
+                this.clients = response.json;
+            } else {
+                this.clients = response.json;
+            }
         }
+
         this.page = page;
 
         this.updatePagination();

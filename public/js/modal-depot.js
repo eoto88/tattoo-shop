@@ -1,5 +1,8 @@
 import { Modal } from './modal.js'
 import { callApi } from './utility.js'
+import {Auth} from './auth.js'
+
+
 export class ModalDepot extends Modal {
     constructor(options) {
         super(document.getElementById('tsmsDepotModal'), options);
@@ -20,8 +23,8 @@ export class ModalDepot extends Modal {
     }
 
     async open(depot, newDepot = false) {
-        if(depot !== Object) {
-            depot = await callApi('depots/' + depot.id);
+        if(typeof depot !== 'object') {
+            depot = await callApi('depots/' + depot);
         }
         // TODO empty form
         const depotStateInput = this.element.querySelector('.depot-state-input')
@@ -71,6 +74,7 @@ export class ModalDepot extends Modal {
             method = 'POST';
             path = 'depots';
         }
+        depot.userId = Auth.getUser().id;
         let response = await callApi(path, method, depot);
 
         if (response) {

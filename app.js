@@ -29,9 +29,9 @@ app.listen(port, () => {
 })
 
 const rules = auth.rewriter({
-    // Permission rules
+    users: 600,
     clients: 600,
-    depots: 640
+    depots: 600
 })
 
 app.use('/api', apiServer.use(rules), apiServer.use(middlewares), apiServer.use(auth), apiServer.use(router));
