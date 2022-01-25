@@ -1,6 +1,7 @@
 import { Modal } from './modal.js'
 import { hide, show, callApi, uuidv4, removeAccents } from './utility.js'
 import { TableDepots } from './table.js';
+import {ModalConfirm} from "./modal-confirm.js";
 
 export class ModalClient extends Modal {
     constructor(options) {
@@ -13,6 +14,7 @@ export class ModalClient extends Modal {
 
         this.addDepotBtn = this.getAddDepotBtn();
         this.editNameBtn = this.getEditNameBtn();
+        // this.deleteBtn = this.getDeleteBtn()
         this.cancelEditNameBtn = this.getCancelEditNameBtn();
     }
 
@@ -30,6 +32,11 @@ export class ModalClient extends Modal {
         return dialog.querySelector('.btn-name-input');
     }
 
+    getDeleteBtn() {
+        const dialog = this.getDialog();
+        return dialog.querySelector('.btn-delete');
+    }
+
     getCancelEditNameBtn() {
         const dialog = this.getDialog();
         return dialog.querySelector('.btn-name-cancel');
@@ -41,6 +48,7 @@ export class ModalClient extends Modal {
         const me = this;
         const dialog = this.getDialog();
         const editNameBtn = this.getEditNameBtn();
+        const deleteBtn = this.getDeleteBtn();
         const cancelEditNameBtn = this.getCancelEditNameBtn();
         const saveEditNameBtn = dialog.querySelector('.btn-name-save');
         const addDepotBtn = this.getAddDepotBtn();
@@ -48,11 +56,14 @@ export class ModalClient extends Modal {
         editNameBtn.onclick = function () {
             me.editName();
         }
+        deleteBtn.onclick = async function() {
+            await me.delete();
+        }
         cancelEditNameBtn.onclick = function () {
             me.closeEditName();
         }
         saveEditNameBtn.onclick = async function () {
-            me.saveEditName();
+            await me.saveEditName();
         }
         addDepotBtn.onclick = function () {
             me.addDepot();
@@ -187,6 +198,28 @@ export class ModalClient extends Modal {
         // TODO Ajuster fnCloseNameEdit si création
 
         // TODO Mettre à jour la liste des clients
+    }
+
+    async delete() {
+        const dialog = this.getDialog();
+        const clientIdInput = dialog.querySelector('#clientId');
+        let id = clientIdInput.value;
+        let path = 'clients/' + id;
+
+        const me = this;
+        const modalConfirm = new ModalConfirm({
+            'message': 'Êtes-vous sûre de vouloir supprimer ce client?',
+            'confirmLabel': 'Supprimer',
+            'onConfirm': async function() {
+                let response = await callApi(path, 'DELETE');
+                if(response.status == 200) {
+                    me.close();
+                } else {
+                    alert('error')
+                }
+            }
+        })
+        modalConfirm.open();
     }
 
     addDepot() {

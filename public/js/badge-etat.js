@@ -7,7 +7,7 @@ export class BadgeEtat {
         if(etat == this.depotEnAttente) {
             return `<span class="badge bg-warning text-dark rounded-pill">En attente</span>`;
         } else if(etat == this.depotPerdu) {
-            return `<span class="badge bg-primary rounded-pill">Perdu</span>`;
+            return `<span class="badge bg-danger rounded-pill">Perdu</span>`;
         } else {
             return `<span class="badge bg-primary rounded-pill">Déduit</span>`;
         }

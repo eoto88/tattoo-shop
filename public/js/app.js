@@ -11,7 +11,7 @@ tsms.list = undefined;
 tsms.modalClient = undefined;
 
 window.tattooShop = window.tattooShop || {};
-window.tattooShop.version = '0.1.3'
+window.tattooShop.version = '0.2.1'
 
 function docReady(fn) {
     // see if DOM is already available
@@ -66,9 +66,9 @@ docReady(async function () {
             easterEgg();
         }
         if (query.length > 0) {
-            tsms.list.updateList(query);
+            updateList(query);
         } else {
-            updateList();
+            updateList('');
         }
     }
 
@@ -83,10 +83,10 @@ docReady(async function () {
     updateList();
 });
 
-function updateList() {
+function updateList(query) {
     if(Auth.isAuthenticated()) {
         // TODO add query
-        tsms.list.updateList();
+        tsms.list.updateList(query);
     }
 }
 

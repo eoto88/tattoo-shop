@@ -163,6 +163,9 @@
                             <button class="btn-name-save btn btn-outline-primary" title="Enregistrer">
                                 <i class="bi bi-save"></i>
                             </button>
+                            <button class="btn-delete btn btn-outline-primary" title="Supprimer">
+                                <i class="bi bi-trash"></i>
+                            </button>
                             <button class="btn-name-cancel btn btn-outline-primary" title="Annuler">
                                 <i class="bi bi-x-lg"></i>
                             </button>
@@ -188,6 +191,22 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-primary" id="create-depot">Ajouter un dépot&nbsp;&nbsp;<i
                     class="bi bi-journal-plus"></i></button>
+            </div>
+        </div>
+        <div id="confirmModal" class="modal" tabindex="-1" aria-labelledby="confirmModal"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteDepotModalLabel"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body"></div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary btn-cancel">Annuler</button>
+                        <button class="btn btn-danger btn-confirm">Confirmer</button>
+                    </div>
+                </div>
             </div>
         </div>
         <div id="deleteDepotModal" class="modal" tabindex="-1" aria-labelledby="deleteDepotModalLabel"

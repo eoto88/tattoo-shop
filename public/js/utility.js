@@ -29,7 +29,7 @@ export function removeAccents(str) {
  * @param {*} payload
  * @returns
  */
-export async function callApi(path, method = 'GET', payload) {
+export async function callApi(path, method = 'GET', payload = {}) {
     let requestOptions = {
         method: method,
         // mode: 'cors',
@@ -50,6 +50,12 @@ export async function callApi(path, method = 'GET', payload) {
 
     if (!response.ok) {
         // throw new Error(`Erreur HTTP ! statut : ${response.status}`);
+        return {
+            'status': response.status
+        }
+    }
+
+    if(method === 'DELETE') {
         return {
             'status': response.status
         }

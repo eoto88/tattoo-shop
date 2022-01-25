@@ -8,7 +8,7 @@ export class List {
         this.query = '';
         this.count = 0;
         this.page = 1;
-        this.limit = 10;
+        this.limit = 25;
         this.listOf = 'clients'
 
         this.onItemClick = options.onItemClick
@@ -57,7 +57,13 @@ export class List {
         }
     }
 
-    async updateList(query = '', page = 1) {
+    async updateList(query, page ) {
+        if(query === undefined) {
+            query = this.query;
+        }
+        if(page === undefined) {
+            page = this.page;
+        }
         const listOf = document.getElementById('listOf').value;
         this.listOf = listOf
 
@@ -91,6 +97,8 @@ export class List {
     emptyList() {
         const listeClients = document.getElementById('liste-clients');
         listeClients.innerHTML = '';
+        this.page = 1;
+        this.query = '';
     }
 
     formatClientItem(client) {
@@ -132,14 +140,17 @@ export class List {
     }
 
     async getData(listOf, query = '', page = 1, filtre = '') {
+        if(query !== this.query) {
+            page = 1;
+        }
         const userId = Auth.getUser().id;
-        let url = `clients?_sort=cleanName&userId=${userId}&_embed=depots&_page=${page}&_limit=10`;
+        let url = `clients?_sort=cleanName&userId=${userId}&_embed=depots&_page=${page}&_limit=${this.limit}`;
         if(listOf == 'depots') {
             let filtreDepots = ''
             if(filtre == 'Dépôts en attente') {
                 filtreDepots ='&etat=En attente'
             }
-            url = `depots?_expand=client&_page=${page}&_limit=10${filtreDepots}`;
+            url = `depots?_expand=client&userId=${userId}&_page=${page}&_limit=${this.limit}${filtreDepots}`;
         }
         if (query != '') {
             url += '&q=' + query;

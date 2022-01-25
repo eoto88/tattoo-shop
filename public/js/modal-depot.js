@@ -21,7 +21,7 @@ export class ModalDepot extends Modal {
 
     async open(depot, newDepot = false) {
         if(depot !== Object) {
-            depot = await callApi('depots/' + depot);
+            depot = await callApi('depots/' + depot.id);
         }
         // TODO empty form
         const depotStateInput = this.element.querySelector('.depot-state-input')
