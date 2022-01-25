@@ -1,3 +1,5 @@
+import {Auth} from "./auth.js";
+
 export function hide() {
     for (var i = 0; i < arguments.length; i++) {
         arguments[i].classList.add('d-none');
@@ -30,19 +32,27 @@ export function removeAccents(str) {
 export async function callApi(path, method = 'GET', payload) {
     let requestOptions = {
         method: method,
-        mode: 'cors',
+        // mode: 'cors',
         headers: {
-            'Access-Control-Allow-Origin': '*',
+            // 'Access-Control-Allow-Origin': '*',
             'Content-Type': 'application/json'
         }
     };
     if (method === 'POST' || method === 'PUT') {
         requestOptions.body = JSON.stringify(payload);
     }
-    let response = await fetch("http://api.tsms.tattoo:3000/" + path, requestOptions);
+    let token = Auth.getToken()
+    if(token) {
+        requestOptions.headers.Authorization = "Bearer " + token;
+
+    }
+    let response = await fetch("/api/" + path, requestOptions);
 
     if (!response.ok) {
-        throw new Error(`Erreur HTTP ! statut : ${response.status}`);
+        // throw new Error(`Erreur HTTP ! statut : ${response.status}`);
+        return {
+            'status': response.status
+        }
     }
 
     const count = response.headers.get('X-Total-Count')

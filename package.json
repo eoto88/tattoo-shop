@@ -5,13 +5,12 @@
   "main": "index.js",
   "scripts": {
     "dev": "concurrently \"npm run sass\" \"npm run json-server\" \"npm run http-server\"",
-    "css": "node-sass scss/style.scss css/style.css",
-    "sass": "npm run css && node-sass scss/style.scss -w css/style.css",
+    "css": "node-sass scss/style.scss public/css/style.css",
+    "sass": "npm run css && node-sass scss/style.scss -w public/css/style.css",
     "json-server": "json-server --host api.tsms.tattoo --watch db.json --quiet",
-    "http-server": "http-server -c-1 --cors -a tsms.tattoo -o . --silent",
+    "http-server": "http-server -c-1 --cors -a tsms.tattoo -o ./public/ --silent",
     "start": "concurrently \"npm run json-server\" \"npm run http-server\""
   },
-  "type": "module",
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -20,7 +19,8 @@
     "concurrently": "^6.2.1",
     "express": "^4.17.1",
     "http-server": "^13.0.1",
-    "json-server": "^0.16.3",
+    "json-server": "^0.17.0",
+    "json-server-auth": "^2.1.0",
     "lowdb": "^2.1.0",
     "moment": "^2.29.1",
     "tsparticles": "^1.34.0"

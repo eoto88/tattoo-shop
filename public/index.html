@@ -12,11 +12,11 @@
     <meta property="og:url" content="">
     <meta property="og:image" content="">
 
-    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="apple-touch-icon" href="../icon.png">
     <!-- Place favicon.ico in the root directory -->
 
-    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="node_modules/bootstrap-icons/font/bootstrap-icons.css"/>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../node_modules/bootstrap-icons/font/bootstrap-icons.css"/>
     <link rel="stylesheet" href="css/style.css">
 
     <meta name="theme-color" content="#fafafa">
@@ -24,16 +24,57 @@
 
 <body>
 <section id="content">
-    <div class="container">
-        <div class="row">
-            <div class="col-12 py-4">
-                <h1>TSMS - Tattoo shop management system</h1>
+    <header>
+        <div class="container">
+            <div class="row">
+                <div class="col-9 py-4">
+                    <h1>TSMS - Tattoo shop management system</h1>
+                </div>
+                <div class="col-3 py-4">
+                    <button type="button" id="logout" class="btn btn-secondary">Déconnexion</button>
+                </div>
             </div>
         </div>
+    </header>
 
-        <div class="input-group mb-3">
-            <label for="search" class="input-group-text">Rechercher&nbsp;&nbsp;<i class="bi bi-search"></i></label>
-            <input type="text" id="search" class="form-control"/>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="input-group mb-3">
+                    <label for="search" class="input-group-text">Rechercher&nbsp;&nbsp;<i class="bi bi-search"></i></label>
+                    <input type="text" id="search" class="form-control"/>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <div class="input-group mb-3">
+                    <label for="listOf" class="input-group-text">Liste de </label>
+                    <select type="text" id="listOf" class="form-select">
+                        <option selected value="clients">clients</option>
+                        <option value="depots">dépôts</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="input-group mb-3">
+                    <label for="sort" class="input-group-text">Trier&nbsp;&nbsp;<i class="bi bi-arrow-down-up"></i></label>
+                    <select type="text" id="sort" class="form-select">
+                        <option selected>Nom croissant</option>
+                        <option>Nom décroissant</option>
+                        <option>Dépot en attente</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="input-group mb-3">
+                    <label for="filtrer" class="input-group-text">Filter&nbsp;&nbsp;<i class="bi bi-funnel-fill"></i></label>
+                    <select type="text" id="filtrer" class="form-select">
+                        <option selected>Tous les dépôts</option>
+                        <option>Dépôts en attente</option>
+                    </select>
+                </div>
+            </div>
         </div>
 
         <div class="mb-3">
@@ -61,10 +102,39 @@
 
 <footer id="footer">
     <div class="container">
-        Version: 0.1.2&nbsp;|&nbsp;
+        Version: <span id="version"></span>&nbsp;|&nbsp;
         <a href="https://github.com/eoto88/tattoo-shop" target="_blank"><i class="bi bi-github"></i></a>
     </div>
 </footer>
+
+<div id="tsmsLoginModel" class="modal">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen-md-down">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="loginModalLabel">Connexion</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger d-none" role="alert">
+                    Courriel ou mot de passe invalide.
+                </div>
+                <form>
+                    <div class="mb-3">
+                        <label for="loginEmail" class="form-label">Courriel:</label>
+                        <input type="text" class="form-control" id="loginEmail">
+                    </div>
+                    <div class="mb-3">
+                        <label for="loginPassword" class="form-label">Mot de passe</label>
+                        <input type="password" class="form-control" id="loginPassword">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary btn-login">Connexion</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div id="tsmsClientModal" class="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-fullscreen-md-down">

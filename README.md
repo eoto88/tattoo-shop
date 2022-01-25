@@ -12,8 +12,12 @@ sudo vim /etc/hosts
 cp db-sample.json db.json
 ```
 
-## TODO tasks
+## TODO 📜
 - Pouvoir trier par nom, par dépôt en attente ou par date (dernier dépôt ajouté)
+- Ajuster automatiquement les clients sans cleanName
+- Mettre le badge perdu en rouge
+- Possibilité de supprimer un client
+- Pop-up si on ajoute un client en double (Empêcher de créer 2 clients avec le même nom)
 - Afficher tout (au lieu de seulement 10) et possibilité de scroller
 - Afficher le mois en lettres au lieu en chiffre (facultatif)
 - Note undefined par défaut
