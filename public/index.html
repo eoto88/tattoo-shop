@@ -12,11 +12,16 @@
     <meta property="og:url" content="">
     <meta property="og:image" content="">
 
-    <link rel="apple-touch-icon" href="../icon.png">
-    <!-- Place favicon.ico in the root directory -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
 
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="../node_modules/bootstrap-icons/font/bootstrap-icons.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comforter&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 
     <meta name="theme-color" content="#fafafa">
@@ -28,10 +33,17 @@
         <div class="container">
             <div class="row">
                 <div class="col-9 py-4">
-                    <h1>TSMS - Tattoo shop management system</h1>
+                    <h1>Tattoo shop</h1>
                 </div>
                 <div class="col-3 py-4">
-                    <button type="button" id="logout" class="btn btn-secondary">Déconnexion</button>
+                    <div id="userDropdown" class="dropdown">
+                        <a class="btn btn-secondary dropdown-toggle" href="javascript:void(0)" role="button" id="userDropdownLink" data-bs-toggle="dropdown" aria-expanded="false"></a>
+
+                        <ul class="dropdown-menu" aria-labelledby="userDropdownLink">
+                            <li><a class="dropdown-item" href="javascript:void(0)">Compte</a></li>
+                            <li><a class="dropdown-item" id="logout" href="javascript:void(0)">Déconnexion</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -193,12 +205,12 @@
                     class="bi bi-journal-plus"></i></button>
             </div>
         </div>
-        <div id="confirmModal" class="modal" tabindex="-1" aria-labelledby="confirmModal"
+        <div id="confirmModal" class="modal" tabindex="-1" aria-labelledby="confirmModalLabel"
              aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="deleteDepotModalLabel"></h5>
+                        <h5 class="modal-title" id="confirmModalLabel"></h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body"></div>
@@ -278,6 +290,7 @@
 <div id="tsparticles"></div>
 
 <script type="module" src="js/app.js"></script>
+<script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="node_modules/moment/min/moment-with-locales.min.js"></script>
 <script src="node_modules/tsparticles/tsparticles.min.js"></script>
 </body>
