@@ -144,7 +144,7 @@ export class List {
             page = 1;
         }
         const userId = Auth.getUser().id;
-        let url = `clients?_sort=cleanName&userId=${userId}&_embed=depots&_page=${page}&_limit=${this.limit}`;
+        let url = `clients?_sort=cleanName&_embed=depots&_page=${page}&_limit=${this.limit}`;
         if(listOf == 'depots') {
             let filtreDepots = ''
             if(filtre == 'Dépôts en attente') {
@@ -165,7 +165,7 @@ export class List {
             this.clients = []
         } else {
             if(listOf == 'clients') {
-                this.clients = response.json;
+                this.clients = response.clients;
             } else {
                 this.clients = response.json;
             }

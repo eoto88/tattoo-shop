@@ -10,8 +10,12 @@ export class Auth {
         if( response.status == 400) {
             localStorage.setItem('isAuthenticated', false)
         } else {
+            const user = {
+                id_user: response.userId,
+                email: response.email
+            }
             localStorage.setItem('token', response.accessToken)
-            localStorage.setItem('user', JSON.stringify(response.user))
+            localStorage.setItem('user', JSON.stringify(user))
             localStorage.setItem('isAuthenticated', true)
         }
 

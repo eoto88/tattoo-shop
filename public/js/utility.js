@@ -43,7 +43,7 @@ export async function callApi(path, method = 'GET', payload = {}) {
     }
     let token = Auth.getToken()
     if(token) {
-        requestOptions.headers.Authorization = "Bearer " + token;
+        requestOptions.headers["x-access-token"] = token;
 
     }
     let response = await fetch("/api/" + path, requestOptions);
