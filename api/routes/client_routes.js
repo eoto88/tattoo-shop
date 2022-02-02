@@ -7,7 +7,7 @@ const {
     getClient,
     postClient,
     putClient,
-    // deleteClient
+    deleteClient
 } = require('../controllers/client_controller')
 
 router.route('/clients')
@@ -17,6 +17,6 @@ router.route('/clients')
 router.route('/client/:id')
     .get(authJwt.verifyToken, getClient)
     .put(authJwt.verifyToken, putClient)
-//     .delete(deleteClient)
+    .delete(authJwt.verifyToken, deleteClient)
 
 module.exports = router

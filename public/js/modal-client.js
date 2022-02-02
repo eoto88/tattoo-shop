@@ -207,7 +207,7 @@ export class ModalClient extends Modal {
         const dialog = this.getDialog();
         const clientIdInput = dialog.querySelector('#clientId');
         let id = clientIdInput.value;
-        let path = 'clients/' + id;
+        let path = 'client/' + id;
 
         const me = this;
         const modalConfirm = new ModalConfirm({
