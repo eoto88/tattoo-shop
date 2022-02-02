@@ -19,9 +19,6 @@ const getClientDepots = (req, res, next) => {
             } else {
                 Depot.findAllByIdClient(id_client)
                     .then(function(depots) {
-                        for (let i = 0; i < depots.length; i++) {
-                            console.log(depots[i])
-                        }
                         res.json({
                             ok: true,
                             message: 'Client\'s depots found',

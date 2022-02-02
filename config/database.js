@@ -1,5 +1,7 @@
 'use strict'
 
+const moment = require('moment');
+
 const knex = require('knex')({
     client: 'mysql2',
     connection: {
@@ -7,7 +9,11 @@ const knex = require('knex')({
         port : process.env.DB_PORT,
         user : process.env.DB_USER,
         password : process.env.DB_PASS,
-        database : 'tattoo_shop'
+        database : 'tattoo_shop',
+        dateStrings: [
+            'DATE',
+            'DATETIME'
+        ]
     }
 })
 

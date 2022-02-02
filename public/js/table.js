@@ -47,7 +47,8 @@ export class TableDepots {
         const btnDeleteHtml = `<button class="btn-delete-depot btn btn-outline-primary" title="Supprimer"><i class="bi bi-trash"></i></button>`;
         const btnGroup = `<div class="btn-group" role="group">${btnEditHtml}${btnDeleteHtml}</div>`;
         const tdNote = `<td class="note">${depot.note}</td>`;
-        return `<tr data-id="${depot.id}"><td class="dateDepot">${depot.date_depot}</td><td class="montant">${depot.montant}</td><td class="etat">${badgeEtat}</td><td class="dateEtat">${depot.date_etat}</td>${tdNote}<td class="actions">${btnGroup}</td></tr>`;
+        const dateEtat = depot.date_etat == null ? '' : depot.date_etat
+        return `<tr data-id="${depot.id}"><td class="dateDepot">${depot.date_depot}</td><td class="montant">${depot.montant}</td><td class="etat">${badgeEtat}</td><td class="dateEtat">${dateEtat}</td>${tdNote}<td class="actions">${btnGroup}</td></tr>`;
     }
 
     hide() {

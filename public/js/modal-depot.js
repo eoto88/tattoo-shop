@@ -46,10 +46,10 @@ export class ModalDepot extends Modal {
         depotStateInput.value = stateDepot
         depotIdInput.value = depot.id
         clientIdInput.value = depot.clientId
-        dateDepotInput.value = depot.dateDepot
+        dateDepotInput.value = depot.date_depot
         montantDepotInput.value = depot.montant
         etatDepotInput.value = depot.etat
-        dateChangementDepotInput.value = depot.dateEtat
+        dateChangementDepotInput.value = depot.date_etat
         noteDepotInput.value = depot.note
 
         super.open()

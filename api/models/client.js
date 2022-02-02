@@ -24,19 +24,36 @@ module.exports = knex => {
         selectableProps
     })
 
-    const findAllByUserId = function(id_user, query) {
-        if( query ) {
-            return knex.select(selectableProps)
-                .from(tableName)
-                .where({ id_user })
-                .andWhere('name', 'like', `%${query}%`)
-                .timeout(guts.timeout)
-        } else {
-            return knex.select(selectableProps)
-                .from(tableName)
-                .where({ id_user })
-                .timeout(guts.timeout)
-        }
+    const findAllByUserId = function(id_user, query, limit, page) {
+        const offset = (page * limit) -  limit
+        return knex.select(selectableProps)
+            .from(tableName)
+            .where({ id_user })
+            .modify((queryBuilder) => {
+                if (query) {
+                    queryBuilder.andWhere('name', 'like', `%${query}%`)
+                }
+
+                return queryBuilder;
+            })
+            .orderBy('name', 'asc')
+            .limit(limit).offset(offset)
+            .timeout(guts.timeout)
+    }
+
+    const countAllByUserId = function(id_user, query) {
+        return knex.count('* as count')
+            .from(tableName)
+            .where({ id_user })
+            .modify((queryBuilder) => {
+                if (query) {
+                    queryBuilder.andWhere('name', 'like', `%${query}%`)
+                }
+
+                return queryBuilder;
+            })
+            .timeout(guts.timeout)
+            .first()
     }
 
     const findByIdAndUserId = function(id, id_user) {
@@ -49,6 +66,7 @@ module.exports = knex => {
     return {
         ...guts,
         findAllByUserId,
-        findByIdAndUserId
+        countAllByUserId,
+        findByIdAndUserId,
     }
 }

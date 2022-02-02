@@ -8,7 +8,7 @@ export class List {
         this.query = '';
         this.count = 0;
         this.page = 1;
-        this.limit = 25;
+        this.limit = 10;
         this.listOf = 'clients'
 
         this.onItemClick = options.onItemClick
@@ -31,7 +31,11 @@ export class List {
         </li>`
         for (let i = 0; i < nbPages; i++) {
             const pageNumber = i + 1;
-            html += `<li class="page-item"><a class="page-link" href="javascript:void(0)" data-pagenumber="${pageNumber}">${pageNumber}</a></li>`
+            let active = ''
+            if(this.page == pageNumber) {
+                active = 'active'
+            }
+            html += `<li class="page-item ${active}"><a class="page-link" href="javascript:void(0)" data-pagenumber="${pageNumber}">${pageNumber}</a></li>`
         }
         let nextDisabled = '';
         if(this.page >= nbPages) {
@@ -144,7 +148,7 @@ export class List {
             page = 1;
         }
         const userId = Auth.getUser().id;
-        let url = `clients?_sort=cleanName&_embed=depots&_page=${page}&_limit=${this.limit}`;
+        let url = `clients?_page=${page}&_limit=${this.limit}`;
         if(listOf == 'depots') {
             let filtreDepots = ''
             if(filtre == 'Dépôts en attente') {
@@ -164,11 +168,12 @@ export class List {
         if(response.status == 403) {
             this.clients = []
         } else {
-            if(listOf == 'clients') {
-                this.clients = response.clients;
-            } else {
-                this.clients = response.json;
-            }
+            // if(listOf == 'clients') {
+            // debugger;
+                this.clients = response.json.clients;
+            // } else {
+            //     this.clients = response.json;
+            // }
         }
 
         this.page = page;
