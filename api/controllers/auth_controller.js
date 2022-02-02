@@ -19,7 +19,7 @@ const postLogin = (req, res, next) => {
 
     User.verify(username, password)
         .then(function(user) {
-            var token = jwt.sign({ id_user: user.id_user }, process.env.AUTH_SECRET, {
+            var token = jwt.sign({ id_user: user.id }, process.env.AUTH_SECRET, {
                 expiresIn: 86400 // 24 hours
             });
             res.json({

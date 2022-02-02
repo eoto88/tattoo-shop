@@ -169,7 +169,7 @@ export class ModalClient extends Modal {
 
         let method = 'PUT';
         let id = clientIdInput.value;
-        let path = 'clients/' + id;
+        let path = 'client/' + id;
         const name = nameInput.value;
         const cleanName = removeAccents(name);
         const clientState = clientStateInput.value;

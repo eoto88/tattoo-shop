@@ -5,8 +5,8 @@ const router = require('express').Router()
 const {
     getClients,
     getClient,
-    postClient
-    // putClient,
+    postClient,
+    putClient,
     // deleteClient
 } = require('../controllers/client_controller')
 
@@ -16,7 +16,7 @@ router.route('/clients')
 
 router.route('/client/:id')
     .get(authJwt.verifyToken, getClient)
-//     .put(putClient)
+    .put(authJwt.verifyToken, putClient)
 //     .delete(deleteClient)
 
 module.exports = router

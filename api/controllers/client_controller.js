@@ -10,8 +10,6 @@ const getClients = (req, res, next) => {
     const page = req.query._page
 
     if( req.id_user ) {
-        // TODO X-Total-Count
-
         Promise.all([
             Client.countAllByUserId(req.id_user, query),
             Client.findAllByUserId(req.id_user, query, limit, page)
@@ -78,8 +76,28 @@ const postClient  = (req, res, next) => {
     }
 }
 
+const putClient  = (req, res, next) => {
+    const id = req.params.id
+    const name = req.body.name
+
+    if( req.id_user ) {
+        Client.update(id, {
+            name,
+            id_user: req.id_user
+        }).then(function (depots) {
+            res.json({
+                ok: true,
+                message: 'Client modified',
+                depots,
+                id_user: req.id_user
+            })
+        }).catch(next)
+    }
+}
+
 module.exports = {
     getClients,
     getClient,
-    postClient
+    postClient,
+    putClient
 }
