@@ -26,14 +26,14 @@ export class TableDepots {
 
     async load(clientId) {
         this.clientId = clientId
-        const clientDepots = await callApi('depots?clientId=' + clientId + '&_sort=dateDepot&_order=desc');
+        const response = await callApi(`client/${clientId}/depots?_sort=dateDepot&_order=desc`);
 
-        this.clientDepots = clientDepots;
+        this.clientDepots = response.depots;
         const tblDepots = this.getTBody();
 
         let depotsHtml = '';
         const me = this;
-        clientDepots.forEach(function (depot) {
+        this.clientDepots.forEach(function (depot) {
             depotsHtml += me.formatRow(depot)
         });
         tblDepots.innerHTML = depotsHtml;
@@ -47,7 +47,7 @@ export class TableDepots {
         const btnDeleteHtml = `<button class="btn-delete-depot btn btn-outline-primary" title="Supprimer"><i class="bi bi-trash"></i></button>`;
         const btnGroup = `<div class="btn-group" role="group">${btnEditHtml}${btnDeleteHtml}</div>`;
         const tdNote = `<td class="note">${depot.note}</td>`;
-        return `<tr data-id="${depot.id}"><td class="dateDepot">${depot.dateDepot}</td><td class="montant">${depot.montant}</td><td class="etat">${badgeEtat}</td><td class="dateEtat">${depot.dateEtat}</td>${tdNote}<td class="actions">${btnGroup}</td></tr>`;
+        return `<tr data-id="${depot.id}"><td class="dateDepot">${depot.date_depot}</td><td class="montant">${depot.montant}</td><td class="etat">${badgeEtat}</td><td class="dateEtat">${depot.date_etat}</td>${tdNote}<td class="actions">${btnGroup}</td></tr>`;
     }
 
     hide() {

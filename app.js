@@ -14,6 +14,7 @@ app.use('/api', [
     require('./api/routes/auth_routes'),
     require('./api/routes/user_routes'),
     require('./api/routes/client_routes'),
+    require('./api/routes/depot_routes'),
 ])
 
 app.use('/api', require('./api/middleware/error_middleware').all)

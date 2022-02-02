@@ -9,7 +9,7 @@ const tableName = 'users'
 // Properties that are allowed to be selected from the database for reading.
 // (e.g., `password` is not included and thus cannot be selected)
 const selectableProps = [
-    'id_user',
+    'id',
     'name',
     'email',
     'updated_at',

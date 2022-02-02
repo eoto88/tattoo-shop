@@ -117,9 +117,10 @@ export class ModalClient extends Modal {
             hide(this.addDepotBtn);
         } else {
             state = this.existingState;
-            client = await callApi('clients/' + id);
+            const response = await callApi('client/' + id);
+            client = response.client
 
-            this.tableDepots.load(id);
+            await this.tableDepots.load(id);
             this.tableDepots.show();
 
             const dialog = this.getDialog();

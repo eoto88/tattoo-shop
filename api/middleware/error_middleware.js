@@ -95,8 +95,8 @@ const exportables = {
     conflict,
     badRequest,
     unprocessable,
-    genericError,
     notFound,
+    genericError,
     catchall
 }
 

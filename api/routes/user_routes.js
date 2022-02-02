@@ -10,13 +10,13 @@ const {
     deleteUser
 } = require('../controllers/user_controller')
 
-router.route('/users')
-    .post(postUsers)
-    .get(authJwt.verifyToken, getUsers)
-
-router.route('/users/:id')
-    .get(getUser)
-    .put(putUser)
-    .delete(deleteUser)
+// router.route('/users')
+//     .post(postUsers)
+//     .get(authJwt.verifyToken, getUsers)
+//
+// router.route('/users/:id')
+//     .get(getUser)
+//     .put(putUser)
+//     .delete(deleteUser)
 
 module.exports = router
