@@ -74,7 +74,8 @@ const putClientDepot = (req, res, next) => {
     const id_client = req.params.id_client
     // Find client first
 
-    const id = req.body.id
+    const id = req.params.id
+    // const id = req.body.id
     const date_depot = req.body.date_depot
     const montant = req.body.montant
     const etat = req.body.etat
@@ -90,15 +91,35 @@ const putClientDepot = (req, res, next) => {
     }).then(function(depots) {
         res.json({
             ok: true,
-            message: 'Depot created',
+            message: 'Depot modified',
             depots,
             id_user: req.id_user
         })
     }).catch(next)
 }
 
+const deleteClientDepot = (req, res, next) => {
+    const id_client = req.params.id_client
+    // Find client first
+
+    const id = req.params.id
+
+    if (req.id_user) {
+        Client.destroy(id)
+            .then(function (depots) {
+                res.json({
+                    ok: true,
+                    message: 'Depot deleted',
+                    depots,
+                    id_user: req.id_user
+                })
+            }).catch(next)
+    }
+}
+
 module.exports = {
     getClientDepots,
     postClientDepot,
-    putClientDepot
+    putClientDepot,
+    deleteClientDepot
 }

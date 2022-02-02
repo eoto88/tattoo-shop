@@ -45,7 +45,7 @@ export class ModalDepot extends Modal {
 
         depotStateInput.value = stateDepot
         depotIdInput.value = depot.id
-        clientIdInput.value = depot.clientId
+        clientIdInput.value = depot.id_client
         dateDepotInput.value = depot.date_depot
         montantDepotInput.value = depot.montant
         etatDepotInput.value = depot.etat
@@ -57,22 +57,23 @@ export class ModalDepot extends Modal {
 
     async saveDepot() {
         const depotId = this.getDepotId()
+        const clientId = this.getDepotClientId()
 
         const depot = {
             "id": depotId,
-            "clientId": this.getDepotClientId(),
-            "dateDepot": this.getDateDepot(),
+            "clientId": clientId,
+            "date_depot": this.getDateDepot(),
             "montant": this.getMontantDepot(),
             "etat": this.getEtatDepot(),
-            "dateEtat": this.getDateChangementDepot(),
+            "date_etat": this.getDateChangementDepot(),
             "note": this.getNoteDepot()
         }
 
         let method = 'PUT';
-        let path = 'depots/' + depotId;
+        let path = 'client/' + clientId + '/depot/' + depotId;
         if (this.getDepotState() == this.newState) {
             method = 'POST';
-            path = 'depots';
+            path = 'client/' + clientId + '/depots';
         }
         depot.userId = Auth.getUser().id;
         let response = await callApi(path, method, depot);

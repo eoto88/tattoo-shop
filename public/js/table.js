@@ -143,7 +143,7 @@ export class TableDepots {
         const me = this
         deleteBtn.onclick = async function () {
             const depotId = me.getRowId(row)
-            let response = await callApi('depots/' + depotId, 'DELETE');
+            let response = await callApi('client/'+ me.clientId +'/depot/' + depotId, 'DELETE');
 
             row.remove();
 

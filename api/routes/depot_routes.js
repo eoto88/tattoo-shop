@@ -6,13 +6,15 @@ const {
     getClientDepots,
     postClientDepot,
     putClientDepot,
-    // deleteDepot,
+    deleteClientDepot,
 } = require('../controllers/depot_controller')
 
 router.route('/client/:id_client/depots')
     .get(authJwt.verifyToken, getClientDepots)
     .post(authJwt.verifyToken, postClientDepot)
+
+router.route('/client/:id_client/depot/:id')
     .put(authJwt.verifyToken, putClientDepot)
-    // .delete(authJwt.verifyToken, deleteDepot)
+    .delete(authJwt.verifyToken, deleteClientDepot)
 
 module.exports = router
