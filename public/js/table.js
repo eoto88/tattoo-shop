@@ -193,7 +193,7 @@ export class TableDepots {
     addDepot(clientId) {
         const newDepot = {
             "id": uuidv4(),
-            "clientId": clientId,
+            "id_client": clientId,
             "dateDepot": moment().format('YYYY-MM-DD'),
             "montant": "0",
             "etat": "En attente",
