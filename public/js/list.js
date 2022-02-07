@@ -9,7 +9,6 @@ export class List {
         this.count = 0;
         this.page = 1;
         this.limit = 10;
-        this.listOf = 'clients'
 
         this.onItemClick = options.onItemClick
     }
@@ -68,20 +67,14 @@ export class List {
         if(page === undefined) {
             page = this.page;
         }
-        const listOf = document.getElementById('listOf').value;
-        this.listOf = listOf
 
         const filtre = document.getElementById('filtrer').value;
 
-        await this.getData(listOf, query, page, filtre);
+        await this.getData(query, page, filtre);
         let html = "";
         const me = this
         this.clients.forEach(function (client) {
-            if(listOf == 'clients') {
-                html += me.formatClientItem(client);
-            } else {
-                html += me.formatDepotItem(client);
-            }
+            html += me.formatClientItem(client);
         });
         const listeClients = document.getElementById('liste-clients');
         listeClients.innerHTML = html;
@@ -143,7 +136,7 @@ export class List {
         </li>`;
     }
 
-    async getData(listOf, query = '', page = 1, filtre = '') {
+    async getData(query = '', page = 1, filtre = '') {
         if(query !== this.query) {
             page = 1;
         }
@@ -155,15 +148,7 @@ export class List {
         } else if (filtre == 'Déduit') {
             filtreDepots ='&depotsEtat=Déduit'
         }
-        const userId = Auth.getUser().id;
         let url = `clients?_page=${page}&_limit=${this.limit}${filtreDepots}`;
-        if(listOf == 'depots') {
-            let filtreDepots = ''
-            if(filtre == 'Dépôts en attente') {
-                filtreDepots ='&etat=En attente'
-            }
-            url = `depots?_expand=client&userId=${userId}&_page=${page}&_limit=${this.limit}${filtreDepots}`;
-        }
         if (query != '') {
             url += '&q=' + query;
         }
@@ -176,12 +161,7 @@ export class List {
         if(response.status == 403) {
             this.clients = []
         } else {
-            // if(listOf == 'clients') {
-            // debugger;
-                this.clients = response.json.clients;
-            // } else {
-            //     this.clients = response.json;
-            // }
+            this.clients = response.json.clients;
         }
 
         this.page = page;

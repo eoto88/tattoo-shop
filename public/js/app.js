@@ -34,7 +34,6 @@ function docReady(fn) {
 
 docReady(async function () {
     let search = document.getElementById("search");
-    const listOf = document.getElementById('listOf');
     let filtre = document.getElementById('filtrer');
     const btnAddClient = document.getElementById("create-client");
     const userDropdownLink = document.getElementById('userDropdownLink')
@@ -78,10 +77,6 @@ docReady(async function () {
         }
     }
 
-    listOf.onchange = function () {
-        updateList();
-    };
-
     filtre.onchange = function () {
         updateList();
     };
@@ -97,9 +92,5 @@ function updateList(query) {
 }
 
 function openModal(id) {
-    if (tsms.list.listOf == 'clients') {
-        tsms.modalClient.open(id);
-    } else {
-        tsms.modalClient.open(id);
-    }
+    tsms.modalClient.open(id);
 }
