@@ -8,11 +8,20 @@ const getClients = (req, res, next) => {
     const query = req.query.q
     const limit = req.query._limit
     const page = req.query._page
+    const depotsEtat = req.query.depotsEtat
 
     if (req.id_user) {
         Promise.all([
-            Client.countAllByUserId(req.id_user, query),
-            Client.findAllByUserId(req.id_user, query, limit, page)
+            Client.countAllByUserId(req.id_user, {
+                query,
+                depotsEtat
+            }),
+            Client.findAllByUserId(req.id_user, {
+                query,
+                limit,
+                page,
+                depotsEtat
+            })
         ]).then(([total, clients]) => {
             res.set("X-Total-Count", total.count)
             Promise.all(clients.map(client => {

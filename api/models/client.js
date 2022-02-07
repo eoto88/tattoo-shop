@@ -24,34 +24,50 @@ module.exports = knex => {
         selectableProps
     })
 
-    const findAllByUserId = function(id_user, query, limit, page) {
+    const findAllByUserId = function(id_user, filters) {
+        const limit = filters.limit ? filters.limit : 25
+        const page = filters.page ? filters.page : 1
         const offset = (page * limit) -  limit
-        return knex.select(selectableProps)
+        const depotsEtat = filters.depotsEtat
+
+        return knex.select('clients.id', 'clients.name')
             .from(tableName)
-            .where({ id_user })
             .modify((queryBuilder) => {
-                if (query) {
+                if (filters.query) {
                     queryBuilder.andWhere('name', 'like', `%${query}%`)
+                }
+                if(depotsEtat) {
+                    queryBuilder.join('depots', 'depots.id_client', 'clients.id')
+                    queryBuilder.andWhere({ 'depots.etat': depotsEtat })
+                    queryBuilder.groupBy('depots.id_client')
                 }
 
                 return queryBuilder;
             })
+            .andWhere({ 'clients.id_user': id_user })
             .orderBy('name', 'asc')
             .limit(limit).offset(offset)
             .timeout(guts.timeout)
     }
 
-    const countAllByUserId = function(id_user, query) {
+    const countAllByUserId = function(id_user, filters) {
+        const depotsEtat = filters.depotsEtat
+
         return knex.count('* as count')
             .from(tableName)
-            .where({ id_user })
             .modify((queryBuilder) => {
-                if (query) {
-                    queryBuilder.andWhere('name', 'like', `%${query}%`)
+                if (filters.query) {
+                    queryBuilder.andWhere('name', 'like', `%${filters.query}%`)
+                }
+                if(depotsEtat) {
+                    queryBuilder.join('depots', 'depots.id_client', 'clients.id')
+                    queryBuilder.andWhere({ 'depots.etat': depotsEtat })
+                    queryBuilder.groupBy('depots.id_client')
                 }
 
                 return queryBuilder;
             })
+            .andWhere({ 'clients.id_user': id_user })
             .timeout(guts.timeout)
             .first()
     }

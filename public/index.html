@@ -80,10 +80,12 @@
             </div>
             <div class="col-4">
                 <div class="input-group mb-3">
-                    <label for="filtrer" class="input-group-text">Filter&nbsp;&nbsp;<i class="bi bi-funnel-fill"></i></label>
+                    <label for="filtrer" class="input-group-text">Filtrer&nbsp;&nbsp;<i class="bi bi-funnel-fill"></i></label>
                     <select type="text" id="filtrer" class="form-select">
-                        <option selected>Tous les dépôts</option>
-                        <option>Dépôts en attente</option>
+                        <option selected value="all">Aucun filtre</option>
+                        <option value="En attente">Dépôts en attente</option>.
+                        <option value="Perdu">Dépôts perdus</option>
+                        <option value="Déduit">Dépôts déduits</option>
                     </select>
                 </div>
             </div>

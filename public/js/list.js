@@ -147,8 +147,16 @@ export class List {
         if(query !== this.query) {
             page = 1;
         }
+        let filtreDepots = ''
+        if(filtre == 'En attente') {
+            filtreDepots ='&depotsEtat=En attente'
+        } else if (filtre == 'Perdu') {
+            filtreDepots ='&depotsEtat=Perdu'
+        } else if (filtre == 'Déduit') {
+            filtreDepots ='&depotsEtat=Déduit'
+        }
         const userId = Auth.getUser().id;
-        let url = `clients?_page=${page}&_limit=${this.limit}`;
+        let url = `clients?_page=${page}&_limit=${this.limit}${filtreDepots}`;
         if(listOf == 'depots') {
             let filtreDepots = ''
             if(filtre == 'Dépôts en attente') {
