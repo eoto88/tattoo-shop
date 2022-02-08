@@ -25,7 +25,8 @@ const postLogin = (req, res, next) => {
             res.json({
                 ok: true,
                 message: 'Login successful',
-                userId: user.id_user,
+                id_user: user.id,
+                name: user.name,
                 email: user.email,
                 accessToken: token
             })

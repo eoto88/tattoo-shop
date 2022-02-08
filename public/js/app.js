@@ -11,7 +11,7 @@ tsms.list = undefined;
 tsms.modalClient = undefined;
 
 window.tattooShop = window.tattooShop || {};
-window.tattooShop.version = '0.2.2'
+window.tattooShop.version = '1.0.0'
 
 function docReady(fn) {
     // see if DOM is already available
@@ -36,12 +36,12 @@ docReady(async function () {
     let search = document.getElementById("search");
     let filtre = document.getElementById('filtrer');
     const btnAddClient = document.getElementById("create-client");
-    const userDropdownLink = document.getElementById('userDropdownLink')
+    const userDropdownSpan = document.getElementById('userDropdownSpan')
     const logoutBtn = document.getElementById('logout')
 
     const modalLogin = new ModalLogin({
         'onLogin': function() {
-            userDropdownLink.innerHTML = Auth.getUser().email
+            userDropdownSpan.innerHTML = Auth.getUser().name
             modalLogin.close();
             updateList();
         }
@@ -50,14 +50,14 @@ docReady(async function () {
     if( ! Auth.isAuthenticated()) {
         modalLogin.open();
     } else {
-        userDropdownLink.innerHTML = Auth.getUser().email
+        userDropdownSpan.innerHTML = Auth.getUser().name
     }
 
     logoutBtn.onclick = function() {
         Auth.logout();
         modalLogin.open();
         tsms.list.emptyList();
-        userDropdownLink.innerHTML = ""
+        userDropdownBtn.innerHTML = ""
     }
 
     btnAddClient.onclick = function () {

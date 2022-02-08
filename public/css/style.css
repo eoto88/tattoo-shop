@@ -4,7 +4,18 @@ body {
 
 h1 {
   font-family: 'Comforter', cursive;
-  font-size: 3.5em; }
+  font-size: 4em; }
+
+@media (max-width: 575.98px) {
+  h1 {
+    font-size: 2.5em; } }
+
+#userDropdown {
+  text-align: right; }
+
+#userDropdownSpan {
+  max-width: 10em;
+  line-height: 1em; }
 
 #content {
   min-height: 100%;
@@ -12,9 +23,12 @@ h1 {
   height: 100%;
   margin: 0 auto -60px; }
 
-#push,
-#footer {
-  height: 60px; }
+#pageNumber::-webkit-inner-spin-button,
+#pageNumber::-webkit-outer-spin-button {
+  opacity: 1; }
+
+#pageNumber {
+  -moz-appearance: textfield; }
 
 #tsmsClientModal .modal-dialog {
   min-width: 800px; }

@@ -34,7 +34,7 @@ module.exports = knex => {
             .from(tableName)
             .modify((queryBuilder) => {
                 if (filters.query) {
-                    queryBuilder.andWhere('name', 'like', `%${query}%`)
+                    queryBuilder.andWhere('name', 'like', `%${filters.query}%`)
                 }
                 if(depotsEtat) {
                     queryBuilder.join('depots', 'depots.id_client', 'clients.id')

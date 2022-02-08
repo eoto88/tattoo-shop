@@ -8,56 +8,106 @@ export class List {
         this.query = '';
         this.count = 0;
         this.page = 1;
-        this.limit = 10;
+        this.limit = 25;
+
+        const btnPaginationUp = document.getElementById('paginationUp');
+        const btnPaginationDown = document.getElementById('paginationDown');
+        const me = this
+        btnPaginationUp.addEventListener("click", async function () {
+            const pagenumber = this.dataset.pagenumber;
+
+            me.updateList(me.query, parseInt(pagenumber));
+        });
+        btnPaginationDown.addEventListener("click", async function () {
+            const pagenumber = this.dataset.pagenumber;
+
+            me.updateList(me.query, parseInt(pagenumber));
+        });
 
         this.onItemClick = options.onItemClick
     }
 
     updatePagination() {
-        const paginationClients = document.getElementById('pagination-clients');
+        const inputPageNumber = document.getElementById('pageNumber');
+        const btnPaginationUp = document.getElementById('paginationUp');
+        const btnPaginationDown = document.getElementById('paginationDown');
+        const spanPageTotal = document.getElementById('pageTotal');
+        const nbPages = Math.ceil(this.count / this.limit)
 
-        const nbPages = this.count / this.limit
+        inputPageNumber.value = this.page
 
-        let previousDisabled = '';
-        if(this.page == 1) {
-            previousDisabled = 'disabled'
+        spanPageTotal.innerHTML = '/' + nbPages
+
+        btnPaginationUp.dataset.pagenumber = (this.page - 1).toString()
+        btnPaginationDown.dataset.pagenumber = (this.page + 1).toString()
+
+        if( this.page == 1) {
+            btnPaginationUp.classList.add('disabled');
+        } else {
+            btnPaginationUp.classList.remove('disabled');
         }
-        const previousPageNumber = this.page - 1;
-        let html = `<li class="page-item ${previousDisabled}">
-          <a class="page-link" href="javascript:void(0)" data-pagenumber="${previousPageNumber}" aria-label="Précédent">
-            <span aria-hidden="true">&laquo;</span>
-          </a>
-        </li>`
-        for (let i = 0; i < nbPages; i++) {
-            const pageNumber = i + 1;
-            let active = ''
-            if(this.page == pageNumber) {
-                active = 'active'
-            }
-            html += `<li class="page-item ${active}"><a class="page-link" href="javascript:void(0)" data-pagenumber="${pageNumber}">${pageNumber}</a></li>`
-        }
-        let nextDisabled = '';
-        if(this.page >= nbPages) {
-            nextDisabled = 'disabled'
-        }
-        const nextPageNumber = this.page + 1;
-        html += `<li class="page-item ${nextDisabled}">
-          <a class="page-link" href="javascript:void(0)" data-pagenumber="${nextPageNumber}" aria-label="Suivant">
-            <span aria-hidden="true">&raquo;</span>
-          </a>
-        </li>`
 
-        paginationClients.innerHTML = html;
-
-        const paginationLinks = paginationClients.querySelectorAll('.page-link')
-        for (let i = 0; i < paginationLinks.length; i++) {
-            const me = this;
-            paginationLinks[i].addEventListener("click", async function () {
-                const pagenumber = paginationLinks[i].dataset.pagenumber;
-
-                me.updateList(me.query, parseInt(pagenumber));
-            });
+        if(this.page == nbPages) {
+            btnPaginationDown.classList.add('disabled');
+        } else {
+            btnPaginationDown.classList.remove('disabled');
         }
+
+        // const paginationClients = document.getElementById('pagination-clients');
+        //
+        // const nbPages = Math.ceil(this.count / this.limit)
+        //
+        // let previousDisabled = '';
+        // if(this.page == 1) {
+        //     previousDisabled = 'disabled'
+        // }
+        // const previousPageNumber = this.page - 1;
+        // let html = `<li class="page-item ${previousDisabled}">
+        //   <a class="page-link" href="javascript:void(0)" data-pagenumber="${previousPageNumber}" aria-label="Précédent">
+        //     <span aria-hidden="true">&laquo;</span>
+        //   </a>
+        // </li>`
+        // let hasDots = false;
+        // const hrefJsVoid = `href="javascript:void(0)"`
+        // for (let i = 0; i < nbPages; i++) {
+        //     const pageNumber = i + 1;
+        //     let active = ''
+        //     if(nbPages > 3) {
+        //         if( (pageNumber >= (this.page + 3) && pageNumber <= (nbPages - 3)) || (this.page > 3) ) {
+        //             if( ! hasDots) {
+        //                 html += `<li class="page-item"><a class="page-link" ${hrefJsVoid} data-pagenumber="${pageNumber}"><i class="bi bi-three-dots"></i></a></li>`
+        //                 hasDots = true
+        //             }
+        //             continue;
+        //         }
+        //     }
+        //     if(this.page == pageNumber) {
+        //         active = 'active'
+        //     }
+        //     html += `<li class="page-item ${active}"><a class="page-link" ${hrefJsVoid} data-pagenumber="${pageNumber}">${pageNumber}</a></li>`
+        // }
+        // let nextDisabled = '';
+        // if(this.page >= nbPages) {
+        //     nextDisabled = 'disabled'
+        // }
+        // const nextPageNumber = this.page + 1;
+        // html += `<li class="page-item ${nextDisabled}">
+        //   <a class="page-link" href="javascript:void(0)" data-pagenumber="${nextPageNumber}" aria-label="Suivant">
+        //     <span aria-hidden="true">&raquo;</span>
+        //   </a>
+        // </li>`
+        //
+        // paginationClients.innerHTML = html;
+        //
+        // const paginationLinks = paginationClients.querySelectorAll('.page-link')
+        // for (let i = 0; i < paginationLinks.length; i++) {
+        //     const me = this;
+        //     paginationLinks[i].addEventListener("click", async function () {
+        //         const pagenumber = paginationLinks[i].dataset.pagenumber;
+        //
+        //         me.updateList(me.query, parseInt(pagenumber));
+        //     });
+        // }
     }
 
     async updateList(query, page ) {
