@@ -17,18 +17,16 @@ h1 {
   max-width: 10em;
   line-height: 1em; }
 
-#content {
-  min-height: 100%;
-  height: auto !important;
-  height: 100%;
-  margin: 0 auto -60px; }
-
 #pageNumber::-webkit-inner-spin-button,
 #pageNumber::-webkit-outer-spin-button {
   opacity: 1; }
 
 #pageNumber {
-  -moz-appearance: textfield; }
+  -moz-appearance: textfield;
+  max-width: 5em; }
+
+#footer {
+  padding: 2em 0; }
 
 #tsmsClientModal .modal-dialog {
   min-width: 800px; }

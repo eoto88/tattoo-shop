@@ -31,12 +31,21 @@ h1 {
     line-height: 1em;
 }
 
+#containerListClients {
+
+}
+
 #pageNumber::-webkit-inner-spin-button,
 #pageNumber::-webkit-outer-spin-button {
     opacity: 1;
 }
 #pageNumber {
     -moz-appearance: textfield;
+    max-width: 5em;
+}
+
+#footer {
+    padding: 2em 0;
 }
 
 #tsmsClientModal .modal-dialog {

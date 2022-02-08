@@ -81,6 +81,7 @@ const putClientDepot = (req, res, next) => {
             const date_depot = req.body.date_depot
             const montant = req.body.montant
             const etat = req.body.etat
+            const date_etat = req.body.date_etat
             const note = req.body.note
 
             Depot.update(id, {
@@ -89,6 +90,7 @@ const putClientDepot = (req, res, next) => {
                 date_depot,
                 montant,
                 etat,
+                date_etat,
                 note
             }).then(function(depots) {
                 res.json({

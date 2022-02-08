@@ -197,7 +197,8 @@ export class TableDepots {
             "dateDepot": moment().format('YYYY-MM-DD'),
             "montant": "0",
             "etat": "En attente",
-            "dateEtat": ""
+            "dateEtat": "",
+            "note": ""
         }
         this.modalDepot.open(newDepot, true);
     }
