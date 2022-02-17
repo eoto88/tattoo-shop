@@ -25,6 +25,8 @@ const args = process.argv.slice(2);
 
 app.use(express.static('public'));
 
+// require('@nuxt/cli').run(['start'])
+
 app.use('/node_modules', express.static(__dirname + '/node_modules/'));
 
 let port = 'passenger'
