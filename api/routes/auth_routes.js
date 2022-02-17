@@ -1,8 +1,10 @@
 'use strict'
 
 const router = require('express').Router()
+const authJwt = require("../middleware/authJwt");
 const {
     postLogin,
+    getUser,
     postRegister
 } = require('../controllers/auth_controller')
 
@@ -16,6 +18,9 @@ router.use(function(req, res, next) {
 
 router.route('/login')
     .post(postLogin)
+
+router.route('/me')
+    .get(authJwt.verifyToken, getUser)
 
 router.route('/register')
     .post(postRegister)

@@ -8,6 +8,7 @@ const {
     UNAUTHORIZED
 } = require('../helpers/error_helper')
 
+let loadedUser;
 const postLogin = (req, res, next) => {
     const username = String(req.body.email)
     const password = String(req.body.password)
@@ -19,6 +20,7 @@ const postLogin = (req, res, next) => {
 
     User.verify(username, password)
         .then(function(user) {
+            loadedUser = user;
             var token = jwt.sign({ id_user: user.id }, process.env.AUTH_SECRET, {
                 expiresIn: 86400 // 24 hours
             });
@@ -35,6 +37,23 @@ const postLogin = (req, res, next) => {
             status: UNAUTHORIZED,
             message: err
         })))
+}
+
+const getUser = (req, res, next) => {
+    if( loadedUser ) {
+        res.status(200).json({
+            user: {
+                id: loadedUser.id,
+                name: loadedUser.name,
+                email: loadedUser.email,
+            },
+        });
+    } else {
+        next(createError({
+            status: UNAUTHORIZED,
+            message: 'No user logged'
+        }));
+    }
 }
 
 const postRegister = (req, res, next) => {
@@ -59,5 +78,6 @@ const postRegister = (req, res, next) => {
 
 module.exports = {
     postLogin,
+    getUser,
     postRegister
 }
