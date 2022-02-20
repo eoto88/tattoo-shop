@@ -5,6 +5,7 @@ const router = require('express').Router()
 const {
     getClientDepots,
     postClientDepot,
+    getClientDepot,
     putClientDepot,
     deleteClientDepot,
 } = require('../controllers/depot_controller')
@@ -14,6 +15,7 @@ router.route('/client/:id_client/depots')
     .post(authJwt.verifyToken, postClientDepot)
 
 router.route('/client/:id_client/depot/:id')
+    .get(authJwt.verifyToken, getClientDepot)
     .put(authJwt.verifyToken, putClientDepot)
     .delete(authJwt.verifyToken, deleteClientDepot)
 

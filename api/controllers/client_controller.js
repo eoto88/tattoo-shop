@@ -56,7 +56,7 @@ const getClient = (req, res, next) => {
                 const client = clients[0]
                 res.json({
                     ok: true,
-                    message: 'Projects found',
+                    message: 'Client found',
                     client,
                     id_user: req.id_user
                 })

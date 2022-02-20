@@ -70,6 +70,27 @@ const postClientDepot = (req, res, next) => {
         }).catch(next)
 }
 
+const getClientDepot = (req, res, next) => {
+    const id_client = req.params.id_client
+    const id_user = req.id_user
+
+    isExistingClient(id_client, id_user)
+        .then(function(client){
+            const id = req.params.id
+
+            Depot.findOne({ id })
+                .then(function(depot) {
+                    res.json({
+                        ok: true,
+                        message: 'Depot modified',
+                        depot,
+                        id_user: req.id_user
+                    })
+                }).catch(next)
+        })
+        .catch(next)
+}
+
 const putClientDepot = (req, res, next) => {
     const id_client = req.params.id_client
     const id_user = req.id_user
@@ -128,6 +149,7 @@ const deleteClientDepot = (req, res, next) => {
 module.exports = {
     getClientDepots,
     postClientDepot,
+    getClientDepot,
     putClientDepot,
     deleteClientDepot
 }

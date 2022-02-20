@@ -5,8 +5,8 @@
     </v-card-title>
     <v-card-text>
       <v-simple-table
-          fixed-header
-          height="300px"
+        fixed-header
+        height="300px"
       >
         <template v-slot:default>
           <thead>
@@ -30,14 +30,15 @@
           </thead>
           <tbody>
           <tr
-              v-for="item in depots"
-              :key="item.id"
+            v-for="depot in depots"
+            :key="depot.id"
+            @click="editDepot(depot)"
           >
-            <td>{{ item.date_depot }}</td>
-            <td>{{ item.montant }}</td>
-            <td>{{ item.etat }}</td>
-            <td>{{ item.date_etat }}</td>
-            <td>{{ item.note }}</td>
+            <td>{{ depot.date_depot }}</td>
+            <td>{{ depot.montant }}</td>
+            <td>{{ depot.etat }}</td>
+            <td>{{ depot.date_etat }}</td>
+            <td>{{ depot.note }}</td>
           </tr>
           </tbody>
         </template>
@@ -45,8 +46,8 @@
     </v-card-text>
     <v-card-actions>
       <v-btn
-          color="success"
-          @click="addDepot"
+        color="success"
+        @click="addDepot"
       >
         Ajouter un dépôt
       </v-btn>
@@ -78,8 +79,13 @@ export default {
   },
 
   methods: {
-    addDepot: function() {
-
+    editDepot: function (depot) {
+      const idClient = this.$route.query.id
+      this.$router.push({path: '/depot', query: {id: depot.id, idClient}})
+    },
+    addDepot: function () {
+      const idClient = this.$route.query.id
+      this.$router.push({path: '/depot', query: {idClient}})
     }
   }
 };
