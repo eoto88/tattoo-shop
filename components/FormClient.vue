@@ -63,31 +63,46 @@ export default {
 
   components: { DialogCancel },
 
-  async fetch() {
-    const idClient = this.$route.query.id
-    this.client = await this.$axios.get('/client/' + idClient).then(response => {
-      const client = response.data.client
-      this.name = client.name
-      return client
-    })
+  props: {
+    client: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
   },
 
+  // async fetch() {
+  //   const idClient = this.$route.params.id
+  //   this.client = await this.$axios.get('/client/' + idClient).then(response => {
+  //     const client = response.data.client
+  //     this.name = client.name
+  //     return client
+  //   })
+  // },
+
   data: () => ({
-    loading: false,
+    // loading: false,
     showEdit: false,
     dialog: false,
     valid: true,
-    name: '',
     oldName: '',
     nameRules: [
       v => !!v || 'Name is required',
     ],
-    client: {},
+    // client: {},
   }),
 
   computed: {
     idClient() {
       return this.$route.query.id
+    },
+    name() {
+      return this.client?.name
     }
   },
 

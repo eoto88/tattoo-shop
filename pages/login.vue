@@ -9,6 +9,7 @@
         <v-form
             ref="form"
             v-model="valid"
+            id="loginForm"
             lazy-validation
         >
           <v-card-text>
@@ -115,7 +116,7 @@ export default {
 }
 </script>
 <style>
-form {
+#loginForm {
   width: 350px;
 }
 </style>

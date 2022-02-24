@@ -5,7 +5,7 @@
     :loading="loading"
   >
     <v-card-title class="text-h4">
-      Dépôt
+      {{ formTitle }}
       <v-spacer></v-spacer>
     </v-card-title>
     <v-card-text>
@@ -16,27 +16,28 @@
       >
         <DatePicker
           label="Date du dépôt"
-          v-model="depot.date_depot"
+          v-model="mutatedDepot.date_depot"
         />
         <v-text-field
-          v-model="depot.montant"
+          v-model="mutatedDepot.montant"
           type="number"
           label="Montant"
           required
         ></v-text-field>
         <v-select
-          v-model="depot.etat"
+          v-model="mutatedDepot.etat"
           :items="etatsItems"
           label="État"
           single-line
+          @change="handleOnEtatChange"
         ></v-select>
         <DatePicker
-          label="Date du dépôt"
-          v-model="depot.date_etat"
+          label="Date du changement d'état"
+          v-model="mutatedDepot.date_etat"
         />
         <v-textarea
           label="Note"
-          :value="depot.note"
+          :value="mutatedDepot.note"
         ></v-textarea>
         <v-btn
           :disabled="!valid"
@@ -47,7 +48,7 @@
           Enregistrer
         </v-btn>
         <v-btn
-          @click=""
+          @click="$router.go(-1)"
         >
           Annuler
         </v-btn>
@@ -57,8 +58,6 @@
         :show="dialog"
         title="Annuler l'édition du client"
         message="Êtes-vous sûr de vouloir annuler l'édition de ce client?"
-        @yes="dialogCancelEdit"
-        @no="dialogContinueEdit"
       />
     </v-card-text>
   </v-card>
@@ -89,6 +88,13 @@ export default {
   data: () => ({
     dialog: false,
     valid: true,
+    mutatedDepot: {
+      date_depot: null,
+      montant: null,
+      etat: null,
+      date_etat: null,
+      note: null
+    },
     etatsItems: [
       'En attente',
       'Déduit',
@@ -96,18 +102,43 @@ export default {
     ]
   }),
 
+  created: function() {
+    this.mutatedDepot = this.depot
+  },
+
   computed: {
+    formTitle() {
+      if(this.depot?.date_depot) {
+        return "Dépôt du " + this.depot.date_depot
+      } else {
+        return "Dépôt"
+      }
+    },
     idClient() {
+      return this.$route.query.idClient
+    },
+    idDepot() {
       return this.$route.query.id
-    }
+    },
   },
 
   methods: {
+    handleOnEtatChange(newEtat) {
+      if(newEtat == "En attente") {
+        this.mutatedDepot.date_etat = null
+      } else {
+        this.mutatedDepot.date_etat = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)
+      }
+    },
     save: function () {
-      this.loading = true
+      // this.loading = true
       this.$axios
-        .put("/client/" + this.idClient, {
-          name: this.name
+        .put("/client/" + this.idClient + '/depot/' + this.idDepot, {
+          date_depot: this.mutatedDepot.date_depot,
+          montant: this.mutatedDepot.montant,
+          etat: this.mutatedDepot.etat,
+          date_etat: this.mutatedDepot.date_etat,
+          note: this.mutatedDepot.note
         }).then(response => {
         if (response.data.ok) {
           this.showEdit = false
@@ -117,17 +148,9 @@ export default {
           // TODO Error
         })
         .finally(() => {
-          this.loading = false
+          // this.loading = false
         });
     },
-    dialogCancelEdit: function () {
-      this.name = this.oldName
-      this.showEdit = false
-      this.dialog = false
-    },
-    dialogContinueEdit: function () {
-      this.dialog = false
-    }
   }
 };
 </script>

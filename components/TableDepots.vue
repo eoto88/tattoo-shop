@@ -59,33 +59,38 @@
 export default {
   name: 'TableDepots',
   props: {
+    depots: {
+      type: Array,
+      default: []
+    },
     loading: {
       type: Boolean,
       default: false,
     },
   },
 
-  async fetch() {
-    const idClient = this.$route.query.id
-    this.depots = await this.$axios.get('/client/' + idClient + '/depots').then(response => {
-      return response.data.depots
-    })
-  },
+  // async fetch() {
+  //   const idClient = this.$route.params.id
+  //   this.depots = await this.$axios.get('/client/' + idClient + '/depots').then(response => {
+  //     return response.data.depots
+  //   })
+  // },
 
-  data() {
-    return {
-      depots: [],
-    };
-  },
+  // data() {
+  //   return {
+  //     depots: [],
+  //   };
+  // },
 
   methods: {
     editDepot: function (depot) {
-      const idClient = this.$route.query.id
-      this.$router.push({path: '/depot', query: {id: depot.id, idClient}})
+      const idClient = this.$route.params.id
+      const idDepot = depot.id
+      this.$router.push({path: `/client/${idClient}/depot/${idDepot}`})
     },
     addDepot: function () {
-      const idClient = this.$route.query.id
-      this.$router.push({path: '/depot', query: {idClient}})
+      const idClient = this.$route.params.id
+      this.$router.push({path: `/client/${idClient}/depot/`})
     }
   }
 };

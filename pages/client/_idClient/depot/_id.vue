@@ -17,30 +17,46 @@
 
 <script>
 import FormDepot from '~/components/FormDepot';
+import { validateUuid } from "@/helpers/validate";
 
 export default {
   components: {FormDepot},
 
-  data: () => ({
-    breadcrumb: [],
-    client: undefined,
-    depot: undefined
-  }),
-
-  async fetch() {
-    await this.fetchClient();
-    await this.fetchDepot();
-  },
-
   computed: {
     idClient() {
-      return this.$route.query.idClient
+      return this.$route.params.idClient
     },
     clientName() {
       if( this.client ) {
         return this.client.name
       }
       return 'Client'
+    }
+  },
+
+  async validate({ params }) {
+    return validateUuid(params.idClient);
+  },
+
+  async asyncData({ error, route, $axios }) {
+    const idClient = route.params.idClient
+    const client = await $axios.get('/client/' + idClient).then(response => {
+      return response.data.client
+    })
+
+    let depot;
+    if( route.params.id === undefined ) {
+      // Must be a creation
+      depot = {}
+    } else {
+      const idDepot = route.params.id
+      depot = await $axios.get('/client/' + idClient + '/depot/' + idDepot).then(response => {
+        return response.data.depot
+      })
+    }
+    return {
+      client,
+      depot
     }
   },
 
@@ -55,33 +71,14 @@ export default {
         {
           text: this.clientName,
           disabled: false,
-          href: '/client?id=' + this.idClient,
+          href: '/client/' + this.idClient,
         },
         {
           text: 'Dépôt',
           disabled: true
         }
       ]
-    },
-    async fetchClient() {
-      const idClient = this.$route.query.idClient
-      try {
-        this.client = await this.$axios.get('/client/' + idClient).then(response => {
-          return response.data.client
-        })
-      } catch (e) {
-        this.client = {};
-      }
-    },
-    async fetchDepot() {
-      const idDepot = this.$route.query.id
-      const idClient = this.$route.query.idClient
-      if (idClient && idDepot) {
-        this.depot = await this.$axios.get('/client/' + idClient + '/depot/' + idDepot).then(response => {
-          return response.data.depot
-        })
-      }
-    },
+    }
   }
 }
 </script>

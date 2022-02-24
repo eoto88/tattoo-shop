@@ -62,7 +62,7 @@ export default {
 
   methods: {
     editClient: function (client) {
-      this.$router.push({path: '/client', query: {id: client.id}})
+      this.$router.push({path: `/client/${client.id}`})
     },
 
     getDepotsCount: function(client) {
