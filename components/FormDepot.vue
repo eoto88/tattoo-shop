@@ -88,23 +88,19 @@ export default {
   data: () => ({
     dialog: false,
     valid: true,
-    mutatedDepot: {
-      date_depot: null,
-      montant: null,
-      etat: null,
-      date_etat: null,
-      note: null
-    },
+    // mutatedDepot: {
+    //   date_depot: null,
+    //   montant: null,
+    //   etat: null,
+    //   date_etat: null,
+    //   note: null
+    // },
     etatsItems: [
       'En attente',
       'Déduit',
       'Perdu'
     ]
   }),
-
-  created: function() {
-    this.mutatedDepot = this.depot
-  },
 
   computed: {
     formTitle() {
@@ -120,6 +116,9 @@ export default {
     idDepot() {
       return this.$route.query.id
     },
+    mutatedDepot() {
+      return this.depot;
+    }
   },
 
   methods: {
@@ -131,7 +130,6 @@ export default {
       }
     },
     save: function () {
-      // this.loading = true
       this.$axios
         .put("/client/" + this.idClient + '/depot/' + this.idDepot, {
           date_depot: this.mutatedDepot.date_depot,

@@ -5,7 +5,7 @@
       :loading="loading"
   >
     <v-card-title class="text-h4">
-      {{ name }}
+      {{ nameClient }}
       <v-spacer></v-spacer>
       <v-btn
           v-if="! showEdit"
@@ -66,9 +66,7 @@ export default {
   props: {
     client: {
       type: Object,
-      default() {
-        return {};
-      },
+      required: true
     },
     loading: {
       type: Boolean,
@@ -91,6 +89,7 @@ export default {
     dialog: false,
     valid: true,
     oldName: '',
+    name: '',
     nameRules: [
       v => !!v || 'Name is required',
     ],
@@ -99,9 +98,9 @@ export default {
 
   computed: {
     idClient() {
-      return this.$route.query.id
+      return this.$route.params.id
     },
-    name() {
+    nameClient() {
       return this.client?.name
     }
   },

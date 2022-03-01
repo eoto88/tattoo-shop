@@ -1,5 +1,7 @@
 <template>
-  <v-card>
+  <v-card
+    :loading="loading"
+  >
     <v-card-title class="text-h5">
       Liste des dépôts
     </v-card-title>
@@ -7,6 +9,7 @@
       <v-simple-table
         fixed-header
         height="300px"
+        :loading="loading"
       >
         <template v-slot:default>
           <thead>

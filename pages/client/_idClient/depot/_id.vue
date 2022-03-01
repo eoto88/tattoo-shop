@@ -34,31 +34,55 @@ export default {
     }
   },
 
+  data() {
+    return {
+      client: undefined,
+      depot: undefined
+    }
+  },
+
   async validate({ params }) {
     return validateUuid(params.idClient);
   },
 
-  async asyncData({ error, route, $axios }) {
-    const idClient = route.params.idClient
-    const client = await $axios.get('/client/' + idClient).then(response => {
+  async fetch() {
+    const idClient = this.$route.params.idClient
+    this.client = await this.$axios.get('/client/' + idClient).then(response => {
       return response.data.client
     })
 
-    let depot;
-    if( route.params.id === undefined ) {
+    if( this.$route.params.id === undefined ) {
       // Must be a creation
-      depot = {}
+      this.depot = {}
     } else {
-      const idDepot = route.params.id
-      depot = await $axios.get('/client/' + idClient + '/depot/' + idDepot).then(response => {
+      const idDepot = this.$route.params.id
+      this.depot = await this.$axios.get('/client/' + idClient + '/depot/' + idDepot).then(response => {
         return response.data.depot
       })
     }
-    return {
-      client,
-      depot
-    }
   },
+
+  // async asyncData({ error, route, $axios }) {
+  //   const idClient = route.params.idClient
+  //   const client = await $axios.get('/client/' + idClient).then(response => {
+  //     return response.data.client
+  //   })
+  //
+  //   let depot;
+  //   if( route.params.id === undefined ) {
+  //     // Must be a creation
+  //     depot = {}
+  //   } else {
+  //     const idDepot = route.params.id
+  //     depot = await $axios.get('/client/' + idClient + '/depot/' + idDepot).then(response => {
+  //       return response.data.depot
+  //     })
+  //   }
+  //   return {
+  //     client,
+  //     depot
+  //   }
+  // },
 
   methods: {
     getBreadcrumb() {

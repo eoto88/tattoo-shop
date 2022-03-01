@@ -1,7 +1,7 @@
 'use strict'
 
 const {Client, Depot} = require('../models')
-const {UNAUTHORIZED} = require("../helpers/error_helper");
+const {UNAUTHORIZED, createError, NOT_FOUND} = require("../helpers/error_helper");
 const {v4: uuidv4} = require("uuid");
 
 const getClients = (req, res, next) => {
@@ -93,11 +93,17 @@ const putClient = (req, res, next) => {
         Client.update(id, {
             name,
             id_user: req.id_user
-        }).then(function (depots) {
+        }).then(function (response) {
+            if( response === 0) {
+                throw createError({
+                    status: NOT_FOUND,
+                    message: 'Client not found'
+                })
+            }
             res.json({
                 ok: true,
                 message: 'Client modified',
-                depots,
+                response,
                 id_user: req.id_user
             })
         }).catch(next)
