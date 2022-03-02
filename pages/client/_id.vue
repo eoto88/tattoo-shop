@@ -1,5 +1,5 @@
 <template>
-  <v-container fill-height>
+  <v-container>
     <v-row justify-center align-center>
       <v-col
         cols="12"
@@ -12,6 +12,7 @@
         <FormClient
           :client="client"
           :loading="!client"
+          :newClient="newClient"
         />
       </v-col>
       <v-col
@@ -20,6 +21,7 @@
         <TableDepots
           :depots="depots"
           :loading="depotsLoading"
+          v-if="!newClient"
         />
       </v-col>
     </v-row>
@@ -27,7 +29,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import FormClient from '~/components/FormClient';
 import TableDepots from '~/components/TableDepots';
 import { validateUuid } from "@/helpers/validate";
@@ -36,12 +37,14 @@ export default {
   components: {FormClient, TableDepots},
 
   computed: {
-    // ...mapGetters('client', ['client', 'depots']),
     clientName() {
-      if( this.client ) {
+      if( this.client?.name ) {
         return this.client.name
       }
       return 'Client'
+    },
+    newClient() {
+      return this.$route.params.id === undefined
     }
   },
 
@@ -54,20 +57,25 @@ export default {
     }
   },
 
-  async validate({ params }) {
-    return validateUuid(params.id);
-  },
+  // async validate({ params }) {
+  //   return validateUuid(params.id);
+  // },
 
   async fetch() {
     const idClient = this.$route.params.id
-    this.client = await this.$axios.get('/client/' + idClient).then(response => {
-      return response.data.client
-    })
+    if(idClient) {
+      this.client = await this.$axios.get('/client/' + idClient).then(response => {
+        return response.data.client
+      })
 
-    this.depots = await this.$axios.get('/client/' + idClient + '/depots').then(response => {
+      this.depots = await this.$axios.get('/client/' + idClient + '/depots').then(response => {
+        this.depotsLoading = false;
+        return response.data.depots
+      })
+    } else {
+      this.client = {};
       this.depotsLoading = false;
-      return response.data.depots
-    })
+    }
   },
 
   // async asyncData({ error, route, store }) {

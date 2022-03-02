@@ -66,25 +66,25 @@ export default {
   props: {
     client: {
       type: Object,
-      required: true
+      required: {}
     },
     loading: {
       type: Boolean,
       default: false,
     },
+    newClient: {
+      type: Boolean,
+      default: false,
+    }
   },
 
-  // async fetch() {
-  //   const idClient = this.$route.params.id
-  //   this.client = await this.$axios.get('/client/' + idClient).then(response => {
-  //     const client = response.data.client
-  //     this.name = client.name
-  //     return client
-  //   })
-  // },
+  mounted() {
+    if(this.newClient) {
+      this.showEdit = true;
+    }
+  },
 
   data: () => ({
-    // loading: false,
     showEdit: false,
     dialog: false,
     valid: true,
@@ -93,7 +93,6 @@ export default {
     nameRules: [
       v => !!v || 'Name is required',
     ],
-    // client: {},
   }),
 
   computed: {
@@ -108,20 +107,37 @@ export default {
   methods: {
     save: function () {
       this.loading = true
-      this.$axios
-          .put("/client/" + this.idClient, {
+      if(this.newClient) {
+        this.$axios
+          .post("/clients/", {
             name: this.name
           }).then(response => {
-            if( response.data.ok ) {
-              this.showEdit = false
-            }
-          })
+          if (response.data.ok) {
+            this.showEdit = false
+          }
+        })
           .catch(error => {
             // TODO Error
           })
           .finally(() => {
             this.loading = false
           });
+      } else {
+        this.$axios
+          .put("/client/" + this.idClient, {
+            name: this.name
+          }).then(response => {
+          if (response.data.ok) {
+            this.showEdit = false
+          }
+        })
+          .catch(error => {
+            // TODO Error
+          })
+          .finally(() => {
+            this.loading = false
+          });
+      }
     },
     edit: function() {
       this.showEdit = true
@@ -129,16 +145,23 @@ export default {
     },
     cancelEdit: function() {
       if(this.name == this.oldName) {
-        this.showEdit = false
+        if(this.newClient) {
+          this.$router.push({path: `/`})
+        } else {
+          this.showEdit = false
+        }
       } else {
         this.dialog = true
       }
-
     },
     dialogCancelEdit: function() {
-      this.name = this.oldName
-      this.showEdit = false
-      this.dialog = false
+      if(this.newClient) {
+        this.$router.push({path: `/`})
+      } else {
+        this.name = this.oldName
+        this.showEdit = false
+        this.dialog = false
+      }
     },
     dialogContinueEdit: function() {
       this.dialog = false
