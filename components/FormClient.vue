@@ -66,7 +66,9 @@ export default {
   props: {
     client: {
       type: Object,
-      required: {}
+      default: function() {
+        return {}
+      }
     },
     loading: {
       type: Boolean,
@@ -81,6 +83,8 @@ export default {
   mounted() {
     if(this.newClient) {
       this.showEdit = true;
+    } else {
+      this.name = this.client.name;
     }
   },
 
@@ -108,6 +112,7 @@ export default {
     save: function () {
       this.loading = true
       if(this.newClient) {
+        // TODO redirect after creation
         this.$axios
           .post("/clients/", {
             name: this.name

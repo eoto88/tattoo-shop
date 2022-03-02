@@ -46,7 +46,7 @@ module.exports = knex => {
             })
             .andWhere({ 'clients.id_user': id_user })
             .orderBy('name', 'asc')
-            .limit(limit).offset(offset)
+            // .limit(limit).offset(offset)
             .timeout(guts.timeout)
     }
 

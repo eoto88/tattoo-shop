@@ -26,8 +26,10 @@ const getClients = (req, res, next) => {
             res.set("X-Total-Count", total.count)
             Promise.all(clients.map(client => {
                 return Depot.findAllByIdClient(client.id).then(function (depots) {
-                    client.depots = depots
-                    return client
+                    client.waitingDepotsCount = depots.filter(depot => depot.etat ==  "En attente").length;
+                    client.depotsCount = depots.length;
+                    client.depots = depots;
+                    return client;
                 })
             })).then(clients => {
                 res.json({

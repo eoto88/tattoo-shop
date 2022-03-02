@@ -22,6 +22,20 @@
         </v-card>
       </v-col>
     </v-row>
+    <v-fab-transition>
+      <v-btn
+        color="success"
+        dark
+        fixed
+        bottom
+        right
+        fab
+        title="Créer un client"
+        @click="addClient"
+      >
+        <v-icon>mdi-plus</v-icon>
+      </v-btn>
+    </v-fab-transition>
   </v-container>
 </template>
 
@@ -41,6 +55,12 @@ export default {
       this.loading = false;
       return response.data.clients
     })
+  },
+
+  methods: {
+    addClient: function () {
+      this.$router.push({path: `/client/`})
+    },
   },
 }
 </script>
