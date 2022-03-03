@@ -18,6 +18,7 @@
 <script>
 import FormDepot from '~/components/FormDepot';
 import { validateUuid } from "@/helpers/validate";
+import {dateNow} from "../../../../helpers/date";
 
 export default {
   components: {FormDepot},
@@ -53,7 +54,10 @@ export default {
 
     if( this.$route.params.id === undefined ) {
       // Must be a creation
-      this.depot = {}
+      this.depot = {
+        date_depot: dateNow(),
+        etat: 'En attente'
+      }
     } else {
       const idDepot = this.$route.params.id
       this.depot = await this.$axios.get('/client/' + idClient + '/depot/' + idDepot).then(response => {

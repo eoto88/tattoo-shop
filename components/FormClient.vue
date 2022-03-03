@@ -2,17 +2,10 @@
   <v-card
       elevation="2"
       outlined
-      :loading="loading"
+      :loading="loading || saveLoading"
   >
     <v-card-title class="text-h4">
       {{ nameClient }}
-      <v-spacer></v-spacer>
-      <v-btn
-          v-if="! showEdit"
-          @click="edit"
-      >
-        <v-icon>mdi-pencil</v-icon>
-      </v-btn>
     </v-card-title>
     <v-card-text>
       <v-form
@@ -44,7 +37,7 @@
         </v-btn>
       </v-form>
 
-      <DialogCancel
+      <DialogConfirm
           :show="dialog"
           title="Annuler l'édition du client"
           message="Êtes-vous sûr de vouloir annuler l'édition de ce client?"
@@ -56,12 +49,12 @@
 </template>
 
 <script>
-import DialogCancel from '~/components/DialogCancel';
+import DialogConfirm from '~/components/DialogConfirm';
 
 export default {
   name: 'FormClient',
 
-  components: { DialogCancel },
+  components: { DialogConfirm },
 
   props: {
     client: {
@@ -74,22 +67,18 @@ export default {
       type: Boolean,
       default: false,
     },
-    newClient: {
+    edit: {
       type: Boolean,
       default: false,
-    }
+    },
   },
 
   mounted() {
-    if(this.newClient) {
-      this.showEdit = true;
-    } else {
-      this.name = this.client.name;
-    }
+    this.name = this.client.name;
   },
 
   data: () => ({
-    showEdit: false,
+    saveLoading: false,
     dialog: false,
     valid: true,
     oldName: '',
@@ -105,12 +94,18 @@ export default {
     },
     nameClient() {
       return this.client?.name
+    },
+    showEdit() {
+      return this.edit;
+    },
+    newClient() {
+      return this.idClient === undefined;
     }
   },
 
   methods: {
     save: function () {
-      this.loading = true
+      this.saveLoading = true
       if(this.newClient) {
         // TODO redirect after creation
         this.$axios
@@ -118,14 +113,14 @@ export default {
             name: this.name
           }).then(response => {
           if (response.data.ok) {
-            this.showEdit = false
+            this.$router.push({path: `/client/${response.data.newId}`})
           }
         })
           .catch(error => {
             // TODO Error
           })
           .finally(() => {
-            this.loading = false
+            this.saveLoading = false
           });
       } else {
         this.$axios
@@ -140,11 +135,11 @@ export default {
             // TODO Error
           })
           .finally(() => {
-            this.loading = false
+            this.saveLoading = false
           });
       }
     },
-    edit: function() {
+    editClient: function() {
       this.showEdit = true
       this.oldName = this.name
     },

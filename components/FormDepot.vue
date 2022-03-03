@@ -54,7 +54,7 @@
         </v-btn>
       </v-form>
 
-      <DialogCancel
+      <DialogConfirm
         :show="dialog"
         title="Annuler l'édition du client"
         message="Êtes-vous sûr de vouloir annuler l'édition de ce client?"
@@ -64,13 +64,14 @@
 </template>
 
 <script>
-import DialogCancel from '~/components/DialogCancel';
+import DialogConfirm from '~/components/DialogConfirm';
 import DatePicker from "~/components/DatePicker";
+import {dateNow} from "../helpers/date";
 
 export default {
   name: 'FormDepot',
 
-  components: {DialogCancel, DatePicker},
+  components: {DialogConfirm, DatePicker},
 
   props: {
     depot: {
@@ -126,7 +127,7 @@ export default {
       if(newEtat == "En attente") {
         this.mutatedDepot.date_etat = null
       } else {
-        this.mutatedDepot.date_etat = (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)
+        this.mutatedDepot.date_etat = dateNow()
       }
     },
     save: function () {

@@ -80,7 +80,7 @@ const postClient = (req, res, next) => {
             res.json({
                 ok: true,
                 message: 'Client created',
-                depots,
+                newId: id,
                 id_user: req.id_user
             })
         }).catch(next)

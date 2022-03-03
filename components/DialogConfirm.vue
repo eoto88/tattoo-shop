@@ -32,7 +32,7 @@
 
 <script>
 export default {
-  name: 'DialogCancel',
+  name: 'DialogConfirm',
 
   props: {
     show: {

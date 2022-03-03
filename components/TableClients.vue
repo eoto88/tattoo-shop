@@ -24,7 +24,6 @@
       :headers="headers"
       :items="clients"
       :search="search"
-      :custom-filter="filterHasDepotsWaiting"
       :items-per-page="rowsPerpage"
       fixed-header
       height="600px"
