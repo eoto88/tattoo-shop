@@ -79,10 +79,24 @@ module.exports = knex => {
             .timeout(guts.timeout)
     }
 
+    const deleteClientAndDepots = function(id) {
+        return knex.del()
+            .from('clients')
+            .where({ id })
+            .timeout(guts.timeout)
+            .then((response) => {
+                return knex.del()
+                    .from('depots')
+                    .where({ id_client: id })
+                    .timeout(guts.timeout)
+            });
+    }
+
     return {
         ...guts,
         findAllByUserId,
         countAllByUserId,
         findByIdAndUserId,
+        deleteClientAndDepots,
     }
 }

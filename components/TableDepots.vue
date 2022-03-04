@@ -47,14 +47,6 @@
         </template>
       </v-simple-table>
     </v-card-text>
-    <v-card-actions>
-      <v-btn
-        color="success"
-        @click="addDepot"
-      >
-        Ajouter un dépôt
-      </v-btn>
-    </v-card-actions>
   </v-card>
 </template>
 
@@ -91,10 +83,6 @@ export default {
       const idDepot = depot.id
       this.$router.push({path: `/client/${idClient}/depot/${idDepot}`})
     },
-    addDepot: function () {
-      const idClient = this.$route.params.id
-      this.$router.push({path: `/client/${idClient}/depot/`})
-    }
   }
 };
 </script>

@@ -37,7 +37,7 @@
         />
         <v-textarea
           label="Note"
-          :value="mutatedDepot.note"
+          v-model="mutatedDepot.note"
         ></v-textarea>
         <v-btn
           :disabled="!valid"
@@ -112,14 +112,17 @@ export default {
       }
     },
     idClient() {
-      return this.$route.query.idClient
+      return this.$route.params.idClient
     },
     idDepot() {
-      return this.$route.query.id
+      return this.$route.params.id
     },
     mutatedDepot() {
       return this.depot;
-    }
+    },
+    newDepot() {
+      return this.idDepot === undefined;
+    },
   },
 
   methods: {
@@ -131,24 +134,45 @@ export default {
       }
     },
     save: function () {
-      this.$axios
-        .put("/client/" + this.idClient + '/depot/' + this.idDepot, {
-          date_depot: this.mutatedDepot.date_depot,
-          montant: this.mutatedDepot.montant,
-          etat: this.mutatedDepot.etat,
-          date_etat: this.mutatedDepot.date_etat,
-          note: this.mutatedDepot.note
-        }).then(response => {
-        if (response.data.ok) {
-          this.showEdit = false
-        }
-      })
-        .catch(error => {
-          // TODO Error
+      if(this.newDepot) {
+        this.$axios
+          .post("/client/" + this.idClient + '/depots/', {
+            date_depot: this.mutatedDepot.date_depot,
+            montant: this.mutatedDepot.montant,
+            etat: this.mutatedDepot.etat,
+            date_etat: this.mutatedDepot.date_etat,
+            note: this.mutatedDepot.note
+          }).then(response => {
+          if (response.data.ok) {
+            this.$router.push({path: `/client/${this.idClient}/depot/${response.data.newId}`});
+          }
         })
-        .finally(() => {
-          // this.loading = false
-        });
+          .catch(error => {
+            // TODO Error
+          })
+          .finally(() => {
+            // this.loading = false
+          });
+      } else {
+        this.$axios
+          .put("/client/" + this.idClient + '/depot/' + this.idDepot, {
+            date_depot: this.mutatedDepot.date_depot,
+            montant: this.mutatedDepot.montant,
+            etat: this.mutatedDepot.etat,
+            date_etat: this.mutatedDepot.date_etat,
+            note: this.mutatedDepot.note
+          }).then(response => {
+          if (response.data.ok) {
+            this.showEdit = false
+          }
+        })
+          .catch(error => {
+            // TODO Error
+          })
+          .finally(() => {
+            // this.loading = false
+          });
+      }
     },
   }
 };

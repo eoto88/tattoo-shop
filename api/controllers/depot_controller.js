@@ -63,7 +63,7 @@ const postClientDepot = (req, res, next) => {
                 res.json({
                     ok: true,
                     message: 'Depot created',
-                    depots,
+                    newId: id,
                     id_user: req.id_user
                 })
             }).catch(next)

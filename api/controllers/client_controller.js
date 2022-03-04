@@ -116,7 +116,7 @@ const deleteClient = (req, res, next) => {
     const id = req.params.id
 
     if (req.id_user) {
-        Client.destroy(id)
+        Client.deleteClientAndDepots(id)
             .then(function (depots) {
                 res.json({
                     ok: true,
