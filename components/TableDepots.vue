@@ -6,46 +6,15 @@
       Liste des dépôts
     </v-card-title>
     <v-card-text>
-      <v-simple-table
+      <v-data-table
+        :headers="headers"
+        :items="depots"
         fixed-header
         height="300px"
         :loading="loading"
+        @click:row="editDepot"
       >
-        <template v-slot:default>
-          <thead>
-          <tr>
-            <th class="text-left">
-              Date de dépôt
-            </th>
-            <th class="text-left">
-              Montant
-            </th>
-            <th class="text-left">
-              État
-            </th>
-            <th class="text-left">
-              Date de changement d'état
-            </th>
-            <th class="text-left">
-              Note
-            </th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr
-            v-for="depot in depots"
-            :key="depot.id"
-            @click="editDepot(depot)"
-          >
-            <td>{{ depot.date_depot }}</td>
-            <td>{{ depot.montant }}</td>
-            <td>{{ depot.etat }}</td>
-            <td>{{ depot.date_etat }}</td>
-            <td>{{ depot.note }}</td>
-          </tr>
-          </tbody>
-        </template>
-      </v-simple-table>
+      </v-data-table>
     </v-card-text>
   </v-card>
 </template>
@@ -64,18 +33,17 @@ export default {
     },
   },
 
-  // async fetch() {
-  //   const idClient = this.$route.params.id
-  //   this.depots = await this.$axios.get('/client/' + idClient + '/depots').then(response => {
-  //     return response.data.depots
-  //   })
-  // },
-
-  // data() {
-  //   return {
-  //     depots: [],
-  //   };
-  // },
+  data() {
+    return {
+      headers: [
+        { text: 'Date du dépôt', value: 'date_depot' },
+        { text: 'Montant', value: 'montant' },
+        { text: 'État', value: 'etat' },
+        { text: 'Date de changement d\'état', value: 'date_etat' },
+        { text: 'Note', value: 'note' },
+      ],
+    };
+  },
 
   methods: {
     editDepot: function (depot) {

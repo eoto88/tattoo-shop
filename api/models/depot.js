@@ -34,6 +34,7 @@ module.exports = knex => {
         return knex.select(selectableProps)
             .from(tableName)
             .where({ id_client })
+            .orderBy('date_depot', 'desc')
             .timeout(guts.timeout)
     }
 

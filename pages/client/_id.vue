@@ -24,6 +24,20 @@
           v-if="!newClient"
         />
       </v-col>
+      <v-col
+        cols="12"
+      >
+        <v-timeline dense>
+          <TimelineDepot
+            v-for="(depot ,i) in depots"
+            :date-depot="depot.date_depot"
+            :montant="depot.montant"
+            :etat="depot.etat"
+            :date-etat="depot.date_etat"
+            :note="depot.note"
+          />
+        </v-timeline>
+      </v-col>
     </v-row>
     <DialogConfirm
       :show="showDialogConfirm"
@@ -39,12 +53,12 @@
 <script>
 import FormClient from '~/components/FormClient';
 import TableDepots from '~/components/TableDepots';
-import {validateUuid} from "@/helpers/validate";
 import DialogConfirm from "../../components/DialogConfirm";
 import SpeedDial from "../../components/SpeedDial";
+import TimelineDepot from "../../components/TimelineDepot";
 
 export default {
-  components: { SpeedDial, FormClient, TableDepots, DialogConfirm },
+  components: { SpeedDial, FormClient, TableDepots, DialogConfirm, TimelineDepot },
 
   computed: {
     clientName() {
