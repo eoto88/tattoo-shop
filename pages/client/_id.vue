@@ -27,7 +27,7 @@
       <v-col
         cols="12"
       >
-        <v-timeline dense>
+        <v-timeline :dense="mobile">
           <TimelineDepot
             v-for="(depot ,i) in depots"
             :date-depot="depot.date_depot"
@@ -35,6 +35,7 @@
             :etat="depot.etat"
             :date-etat="depot.date_etat"
             :note="depot.note"
+            :mobile="mobile"
           />
         </v-timeline>
       </v-col>
@@ -61,6 +62,9 @@ export default {
   components: { SpeedDial, FormClient, TableDepots, DialogConfirm, TimelineDepot },
 
   computed: {
+    mobile() {
+      return this.$vuetify.breakpoint.smAndDown;
+    },
     clientName() {
       if (this.client?.name) {
         return this.client.name

@@ -1,14 +1,15 @@
 <template>
-  <v-timeline-item :color="color" left>
+  <v-timeline-item :color="color">
     <template v-slot:opposite>
       <strong>{{ dateDepot }}</strong>
     </template>
     <v-card class="elevation-2">
-      <v-card-title class="text-h5">
-        {{ etat }}
+      <v-card-title v-if="mobile" class="text-h5">
+        {{ dateDepot }}
       </v-card-title>
       <v-card-text>
         <p>Montant: {{ montant}}</p>
+        <p>État: {{ etat }}</p>
         <p v-if="dateEtat">Date de changement d'état: {{ dateEtat }}</p>
         <p v-if="note">Note: {{ note }}</p>
       </v-card-text>
@@ -41,7 +42,11 @@ export default {
     note: {
       type: String,
       default: ''
-    }
+    },
+    mobile: {
+      type: Boolean,
+      default: false
+    },
   },
 
   computed: {
