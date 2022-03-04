@@ -3,7 +3,7 @@
     v-model="fab"
     bottom
     right
-    absolute
+    fixed
   >
     <template v-slot:activator>
       <v-btn

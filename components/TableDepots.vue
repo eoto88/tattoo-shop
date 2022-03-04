@@ -2,9 +2,6 @@
   <v-card
     :loading="loading"
   >
-    <v-card-title class="text-h5">
-      Liste des dépôts
-    </v-card-title>
     <v-card-text>
       <v-data-table
         :headers="headers"

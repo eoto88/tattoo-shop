@@ -9,6 +9,10 @@
           :items="getBreadcrumb()"
           divider="/"
         ></v-breadcrumbs>
+      </v-col>
+      <v-col
+        cols="12"
+      >
         <FormClient
           :client="client"
           :loading="!client"
@@ -18,26 +22,41 @@
       <v-col
         cols="12"
       >
-        <TableDepots
-          :depots="depots"
-          :loading="depotsLoading"
-          v-if="!newClient"
-        />
-      </v-col>
-      <v-col
-        cols="12"
-      >
-        <v-timeline :dense="mobile">
-          <TimelineDepot
-            v-for="(depot ,i) in depots"
-            :date-depot="depot.date_depot"
-            :montant="depot.montant"
-            :etat="depot.etat"
-            :date-etat="depot.date_etat"
-            :note="depot.note"
-            :mobile="mobile"
-          />
-        </v-timeline>
+        <v-expansion-panels multiple :value="openedPanels">
+          <v-expansion-panel>
+            <v-expansion-panel-header class="text-h5">
+              Ligne du temps des dépôts
+            </v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <v-timeline :dense="mobile">
+                <TimelineDepot
+                  v-for="(depot ,i) in depots"
+                  :key="i"
+                  :id-depot="depot.id"
+                  :date-depot="depot.date_depot"
+                  :montant="depot.montant"
+                  :etat="depot.etat"
+                  :date-etat="depot.date_etat"
+                  :note="depot.note"
+                  :mobile="mobile"
+                  v-if="!newClient"
+                />
+              </v-timeline>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+          <v-expansion-panel>
+            <v-expansion-panel-header class="text-h5">
+              Liste des dépôts
+            </v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <TableDepots
+                :depots="depots"
+                :loading="depotsLoading"
+                v-if="!newClient"
+              />
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
       </v-col>
     </v-row>
     <DialogConfirm
@@ -78,6 +97,7 @@ export default {
 
   data() {
     return {
+      openedPanels: [0],
       editFormClient: false,
       showDialogConfirm: false,
       fab: false,
@@ -144,6 +164,7 @@ export default {
       this.$router.push({ path: `/client/${idClient}/depot/` })
     },
     editClient() {
+      this.$vuetify.goTo(0)
       if (this.editFormClient) {
         // TODO Annuler l'édition si déjà en mode d'édition
         this.editFormClient = false;
