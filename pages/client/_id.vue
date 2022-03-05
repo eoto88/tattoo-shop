@@ -61,7 +61,7 @@
     </v-row>
     <DialogConfirm
       :show="showDialogConfirm"
-      title="Supprimer le client client"
+      title="Supprimer le client"
       message="Êtes-vous sûr de vouloir supprimer ce client?"
       @yes="deleteClient"
       @no="cancelDeleteClient"

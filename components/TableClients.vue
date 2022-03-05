@@ -27,6 +27,7 @@
       :items-per-page="rowsPerpage"
       fixed-header
       height="600px"
+      :header-props="headerProps"
       @click:row="editClient"
     >
       <template v-slot:item.depotsCount="{ item }">
@@ -60,6 +61,9 @@ export default {
   },
 
   data: () => ({
+    headerProps: {
+      sortByText: "Trier par"
+    },
     rowsPerpage: -1,
     search: '',
     headers: [

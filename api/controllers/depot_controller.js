@@ -133,7 +133,7 @@ const deleteClientDepot = (req, res, next) => {
         .then(function(client) {
             const id = req.params.id
 
-            Client.destroy(id)
+            Depot.destroy(id)
                 .then(function (depots) {
                     res.json({
                         ok: true,

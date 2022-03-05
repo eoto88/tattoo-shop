@@ -9,8 +9,10 @@
         fixed-header
         height="300px"
         :loading="loading"
+        :header-props="headerProps"
         @click:row="editDepot"
       >
+        <v-data-table-header sort-by-text="Trier par"></v-data-table-header>
       </v-data-table>
     </v-card-text>
   </v-card>
@@ -32,6 +34,9 @@ export default {
 
   data() {
     return {
+      headerProps: {
+        sortByText: "Trier par"
+      },
       headers: [
         { text: 'Date du dépôt', value: 'date_depot' },
         { text: 'Montant', value: 'montant' },

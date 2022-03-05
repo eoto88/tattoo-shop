@@ -3,7 +3,7 @@
     <template v-slot:opposite>
       <strong>{{ localeDate(dateDepot) }}</strong>
     </template>
-    <v-card class="elevation-2">
+    <v-card class="elevation-5">
       <v-card-title class="text-h6">
         <span v-if="!mobile">Dépôt du&nbsp;</span>
         {{ localeDate(dateDepot) }}

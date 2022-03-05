@@ -4,9 +4,31 @@
     outlined
     :loading="loading"
   >
-    <v-card-title class="text-h4">
+    <v-card-title class="text-h5">
       {{ formTitle }}
       <v-spacer></v-spacer>
+      <v-menu offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            icon
+            v-bind="attrs"
+            v-on="on"
+          >
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item>
+            <v-list-item-title>
+              <v-btn
+                color="error"
+                @click="confirmDelete"
+              >Supprimer
+              </v-btn>
+            </v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-card-title>
     <v-card-text>
       <v-form
@@ -48,6 +70,7 @@
           Enregistrer
         </v-btn>
         <v-btn
+          class="mr-4"
           @click="$router.go(-1)"
         >
           Annuler
@@ -55,10 +78,12 @@
       </v-form>
 
       <DialogConfirm
-        :show="dialog"
-        title="Annuler l'édition du client"
-        message="Êtes-vous sûr de vouloir annuler l'édition de ce client?"
-      />
+        :show="showDialogConfirm"
+        title="Supprimer le dépôt"
+        message="Êtes-vous sûr de vouloir supprimer ce dépôt?"
+        @yes="deleteDepot"
+        @no="cancelDeleteDepot"
+      ></DialogConfirm>
     </v-card-text>
   </v-card>
 </template>
@@ -71,7 +96,7 @@ import {dateNow} from "../helpers/date";
 export default {
   name: 'FormDepot',
 
-  components: {DialogConfirm, DatePicker},
+  components: { DialogConfirm, DatePicker },
 
   props: {
     depot: {
@@ -87,7 +112,7 @@ export default {
   },
 
   data: () => ({
-    dialog: false,
+    showDialogConfirm: false,
     valid: true,
     // mutatedDepot: {
     //   date_depot: null,
@@ -105,7 +130,7 @@ export default {
 
   computed: {
     formTitle() {
-      if(this.depot?.date_depot) {
+      if (this.depot?.date_depot) {
         return "Dépôt du " + this.depot.date_depot
       } else {
         return "Dépôt"
@@ -127,14 +152,14 @@ export default {
 
   methods: {
     handleOnEtatChange(newEtat) {
-      if(newEtat == "En attente") {
+      if (newEtat == "En attente") {
         this.mutatedDepot.date_etat = null
       } else {
         this.mutatedDepot.date_etat = dateNow()
       }
     },
     save: function () {
-      if(this.newDepot) {
+      if (this.newDepot) {
         this.$axios
           .post("/client/" + this.idClient + '/depots/', {
             date_depot: this.mutatedDepot.date_depot,
@@ -144,7 +169,7 @@ export default {
             note: this.mutatedDepot.note
           }).then(response => {
           if (response.data.ok) {
-            this.$router.push({path: `/client/${this.idClient}/depot/${response.data.newId}`});
+            this.$router.push({ path: `/client/${this.idClient}/depot/${response.data.newId}` });
           }
         })
           .catch(error => {
@@ -155,7 +180,7 @@ export default {
           });
       } else {
         this.$axios
-          .put("/client/" + this.idClient + '/depot/' + this.idDepot, {
+          .put(`/client/${this.idClient}/depot/${this.idDepot}`, {
             date_depot: this.mutatedDepot.date_depot,
             montant: this.mutatedDepot.montant,
             etat: this.mutatedDepot.etat,
@@ -173,6 +198,24 @@ export default {
             // this.loading = false
           });
       }
+    },
+    confirmDelete() {
+      this.showDialogConfirm = true;
+    },
+    deleteDepot() {
+      this.$axios
+        .delete(`/client/${this.idClient}/depot/${this.idDepot}`).then(response => {
+        if (response.data.ok) {
+          this.$router.push({ path: `/client/${this.idClient}` })
+        }
+      }).catch(error => {
+        // TODO Error
+      }).finally(() => {
+        this.showDialogConfirm = false;
+      });
+    },
+    cancelDeleteDepot() {
+      this.showDialogConfirm = false;
     },
   }
 };
