@@ -22,6 +22,9 @@ const verifyToken = (req, res, next) => {
                 });
             }
             req.id_user = decoded.id_user;
+            // setTimeout(function() {
+            //     next();
+            // }, 2000);
             next();
         });
     } catch (err) {

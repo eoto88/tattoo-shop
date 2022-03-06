@@ -2,7 +2,7 @@
 
 const fs = require('fs')
 const path = require('path')
-const knex = require('../../config/database')
+const knex = require('../config/database')
 
 const getModelFiles = dir => fs.readdirSync(dir)
     .filter(file => (file.indexOf('.') !== 0) && (file !== 'index.js'))
