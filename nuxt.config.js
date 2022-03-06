@@ -44,13 +44,13 @@ export default {
 
     // Doc: https://github.com/nuxt-community/vuetify-module
     vuetify: {
-        customVariables: ["~/assets/variables.scss"],
-        optionsPath: "./vuetify.options.js"
+        // customVariables: ["~/assets/variables.scss"],
+        // optionsPath: "./vuetify.options.js"
     },
 
-    router: {
-        middleware: ['auth'],
-    },
+    // router: {
+    //     middleware: ['auth'],
+    // },
 
     auth: {
         strategies: {
@@ -78,6 +78,6 @@ export default {
     },
 
     axios: {
-        baseURL: 'http://localhost:3005/api', // Used as fallback if no runtime config is provided
+        baseURL: 'http://tattoo-shop-api.collineauxpins.com', // Used as fallback if no runtime config is provided
     },
 };

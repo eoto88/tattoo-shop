@@ -51,10 +51,14 @@ export default {
   }),
 
   async fetch() {
-    this.clients = await this.$axios.get('/clients').then(response => {
-      this.loading = false;
-      return response.data.clients
-    })
+    if(this.$auth.loggedIn) {
+      this.clients = await this.$axios.get('/clients').then(response => {
+        this.loading = false;
+        return response.data.clients
+      })
+    } else {
+      this.$router.push({path: `/login/`})
+    }
   },
 
   methods: {

@@ -2,46 +2,52 @@
   <v-container fill-height>
     <v-layout justify-center align-center>
       <v-card
-          elevation="2"
-          outlined
-          :loading="loading"
+        elevation="4"
+        outlined
+        :loading="loading"
       >
-        <v-form
+        <v-card-title class="text-h5">
+          Connexion
+        </v-card-title>
+        <v-card-text>
+          <v-alert
+            type="error"
+            v-if="errorMessage"
+          >{{ errorMessage }}</v-alert>
+          <v-form
             ref="form"
             v-model="valid"
             id="loginForm"
             lazy-validation
-        >
-          <v-card-text>
+          >
             <v-text-field
-                v-model="email"
-                :counter="100"
-                :rules="emailRules"
-                label="Courriel"
-                required
+              v-model="email"
+              :counter="100"
+              :rules="emailRules"
+              label="Courriel"
+              required
             ></v-text-field>
             <v-text-field
-                v-model="password"
-                :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-                :rules="passwordRules"
-                :type="showPassword ? 'text' : 'password'"
-                name="password"
-                label="Mot de passe"
-                @click:append="showPassword = !showPassword"
+              v-model="password"
+              :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+              :rules="passwordRules"
+              :type="showPassword ? 'text' : 'password'"
+              name="password"
+              label="Mot de passe"
+              @click:append="showPassword = !showPassword"
+              v-on:keyup.enter="login"
             ></v-text-field>
-          </v-card-text>
 
-          <v-card-actions>
             <v-btn
-                :disabled="!valid"
-                color="success"
-                class="mr-4"
-                @click="login"
+              :disabled="!valid"
+              color="success"
+              class="mr-4"
+              @click="login"
             >
               {{ loading ? "Connexion en cours..." : "Connexion" }}
             </v-btn>
-          </v-card-actions>
-        </v-form>
+          </v-form>
+        </v-card-text>
       </v-card>
     </v-layout>
   </v-container>
@@ -50,6 +56,7 @@
 <script>
 export default {
   data: () => ({
+    errorMessage: '',
     loading: false,
     valid: true,
     email: '',
@@ -81,36 +88,20 @@ export default {
               self.$auth.setUserToken(response.data.accessToken)
               self.$router.push('/')
             }
+          }).catch(error => {
+            if(error.response.status === 401) {
+              // error.response.data.message
+              this.errorMessage = "Mot de passe ou courriel incorrect.";
+            }
+          }).finally(() => {
+            this.loading = false
           })
         } catch (e) {
           this.error = e.response.data.message;
         }
-
-        // this.$axios
-        //     .post("/login", {
-        //       email: this.email,
-        //       password: this.password,
-        //     }).then(response => {
-        //       if(response.status = 200) {
-        //         this.$store.setUser(response.data)
-        //         this.success = true
-        //         this.errored = false
-        //       } else {
-        //         this.success = false
-        //       }
-        //     })
-        //     .catch(error => {
-        //       this.errored = true
-        //     })
-        //     .finally(() => {
-        //       this.loading = false
-        //     });
       } else {
         this.loading = false
       }
-      // .finally(() => {
-      //   this.loading = false
-      // });
     },
   },
 }
