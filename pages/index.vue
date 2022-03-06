@@ -11,14 +11,6 @@
           <TableClients
             :clients="clients"
           />
-
-          <hr />
-
-          <v-flex shrink>
-            <v-btn icon color="test" large @click="$vuetify.theme.dark = !$vuetify.theme.dark">
-              <v-icon>mdi-theme-light-dark</v-icon>
-            </v-btn>
-          </v-flex>
         </v-card>
       </v-col>
     </v-row>

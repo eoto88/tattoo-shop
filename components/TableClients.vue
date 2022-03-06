@@ -26,7 +26,7 @@
       :search="search"
       :items-per-page="rowsPerpage"
       fixed-header
-      height="600px"
+      height="500px"
       :header-props="headerProps"
       @click:row="editClient"
     >

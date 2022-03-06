@@ -1,34 +1,21 @@
 <template>
-  <v-container fill-height>
-    <v-layout justify-center align-center>
-      <v-form
-          ref="form"
-          v-model="valid"
-          lazy-validation
+  <v-container>
+    <v-row justify-center align-center>
+      <v-col
+        cols="12"
       >
-        <v-text-field
-            v-model="name"
-            :counter="10"
-            :rules="nameRules"
-            label="Name"
-            required
-        ></v-text-field>
-
-        <v-btn
-            :disabled="!valid"
-            color="success"
-            class="mr-4"
-            @click="validate"
-        >
-          Validate
-        </v-btn>
-      </v-form>
-    </v-layout>
+        <FormProfile />
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script>
+import FormProfile from "../components/FormProfile";
+
 export default {
+  components: { FormProfile },
+
   data: () => ({
     valid: true,
     name: '',
@@ -36,19 +23,11 @@ export default {
       v => !!v || 'Name is required',
       v => (v && v.length <= 10) || 'Name must be less than 10 characters',
     ],
-    email: '',
-    emailRules: [
-      v => !!v || 'E-mail is required',
-      v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+    showPassword: false,
+    password: '',
+    passwordRules: [
+      v => !!v || 'Password is required',
     ],
-    select: null,
-    items: [
-      'Item 1',
-      'Item 2',
-      'Item 3',
-      'Item 4',
-    ],
-    checkbox: false,
   }),
 
   methods: {

@@ -1,37 +1,59 @@
 <template>
   <v-app-bar
-      dark
-      fixed
-      prominent
-      clipped-left
-      app
-      shrink-on-scroll
+    dark
+    fixed
+    prominent
+    clipped-left
+    app
+    shrink-on-scroll
   >
     <v-app-bar-title class="mr-5 align-center">
-      <span class="app-title">Tattoo Shop</span>
+      <nuxt-link to="/" class="app-title">Tattoo Shop</nuxt-link>
     </v-app-bar-title>
     <v-spacer/>
     <v-menu
-        left
-        bottom
-        offset-y
-        v-if="isAuthenticated"
+      left
+      bottom
+      offset-y
+      v-if="isAuthenticated"
     >
       <template v-slot:activator="{ on, attrs }">
         <v-btn
-            v-bind="attrs"
-            v-on="on"
+          icon
+          v-bind="attrs"
+          v-on="on"
         >
           <v-icon>mdi-account</v-icon>
         </v-btn>
       </template>
-      <v-list>
-        <v-list-item>
-          <NuxtLink to="/profile">Profile</NuxtLink>
-        </v-list-item>
-        <v-list-item @click="logout">Se déconnecter</v-list-item>
+      <v-list flat>
+        <v-list-item-group
+          color="primary"
+        >
+          <v-list-item link @click="profile">
+            <v-list-item-icon>
+              <v-icon>mdi-account</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>Profile</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item link @click="logout">
+            <v-list-item-icon>
+              <v-icon>mdi-logout</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>Se déconnecter</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
       </v-list>
     </v-menu>
+    <v-flex shrink>
+      <v-btn icon color="test" large @click="$vuetify.theme.dark = !$vuetify.theme.dark">
+        <v-icon>mdi-theme-light-dark</v-icon>
+      </v-btn>
+    </v-flex>
   </v-app-bar>
 </template>
 
@@ -50,6 +72,9 @@ export default {
   methods: {
     async logout() {
       await this.$auth.logout();  // this method will logout the user and make token to false on the local storage of the user browser
+    },
+    profile() {
+      this.$router.push({ path: `/profile` })
     }
   }
 };
@@ -61,6 +86,8 @@ export default {
 .app-title {
   font-family: 'Comforter', cursive;
   font-size: 3em;
+  color: white !important;
+  text-decoration: none;
 }
 
 @media (max-width: 575.98px) {
