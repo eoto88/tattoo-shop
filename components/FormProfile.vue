@@ -15,13 +15,14 @@
       >
         <v-text-field
           v-model="name"
-          :counter="10"
+          :counter="100"
           :rules="nameRules"
           label="Name"
           required
         ></v-text-field>
         <v-text-field
           v-model="email"
+          :counter="255"
           :rules="emailRules"
           label="E-mail"
           required
@@ -83,6 +84,7 @@ export default {
     emailRules: [
       v => !!v || 'E-mail is required',
       v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+      v => (v && v.length <= 255) || 'Le nom doit contenir en dessous de 255 caractères',
     ],
     showOldPassword: false,
     oldPassword: '',
