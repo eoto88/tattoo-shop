@@ -1,8 +1,8 @@
+require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser');
-const { Client, Depot } = require("./api/models");
-require('dotenv').config()
+const { Client, Depot } = require("./models");
 
 const app = express()
 app.use(bodyParser.urlencoded({ extended: false }));
