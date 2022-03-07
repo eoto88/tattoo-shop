@@ -14,7 +14,6 @@ app.disable('x-powered-by')
 
 app.use('/', [
     require('./routes/auth_routes'),
-    require('./routes/user_routes'),
     require('./routes/client_routes'),
     require('./routes/depot_routes'),
 ])

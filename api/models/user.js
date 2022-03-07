@@ -9,11 +9,11 @@ const tableName = 'users'
 // Properties that are allowed to be selected from the database for reading.
 // (e.g., `password` is not included and thus cannot be selected)
 const selectableProps = [
-    'id',
-    'name',
-    'email',
-    'updated_at',
-    'created_at'
+  'id',
+  'name',
+  'email',
+  'updated_at',
+  'created_at'
 ]
 
 // Bcrypt functions used for hashing password and later verifying it.
@@ -24,50 +24,54 @@ const verifyPassword = (password, hash) => bcrypt.compare(password, hash)
 // Always perform this logic before saving to db. This includes always hashing
 // the password field prior to writing so it is never saved in plain text.
 const beforeSave = user => {
-    if (!user.password) return Promise.resolve(user)
+  if (!user.password) return Promise.resolve(user)
 
-    // `password` will always be hashed before being saved.
-    return hashPassword(user.password)
-        .then(hash => ({ ...user, password: hash }))
-        .catch(err => `Error hashing password: ${ err }`)
+  // `password` will always be hashed before being saved.
+  return hashPassword(user.password)
+    .then(hash => ({ ...user, password: hash }))
+    .catch(err => `Error hashing password: ${err}`)
 }
 
 module.exports = knex => {
-    const guts = createGuts({
-        knex,
-        name,
-        tableName,
-        selectableProps
-    })
+  const guts = createGuts({
+    knex,
+    name,
+    tableName,
+    selectableProps
+  })
 
-    // Augment default `create` function to include custom `beforeSave` logic.
-    const create = props => beforeSave(props)
-        .then(user => guts.create(user))
+  const update = (id, props) => beforeSave(props)
+    .then(user => guts.update(id, user))
 
-    const verify = (email, password) => {
-        const matchErrorMsg = 'Username or password do not match'
+  // Augment default `create` function to include custom `beforeSave` logic.
+  const create = props => beforeSave(props)
+    .then(user => guts.create(user))
 
-        return knex.select()
-            .from(tableName)
-            .where({ email })
-            .timeout(guts.timeout)
-            .first()
-            .then(user => {
-                if (!user) throw matchErrorMsg
+  const verify = (email, password) => {
+    const matchErrorMsg = 'Username or password do not match'
 
-                return user
-            })
-            .then(user => Promise.all([user, verifyPassword(password, user.password)]))
-            .then(([user, isMatch]) => {
-                if (!isMatch) throw matchErrorMsg
+    return knex.select()
+      .from(tableName)
+      .where({ email })
+      .timeout(guts.timeout)
+      .first()
+      .then(user => {
+        if (!user) throw matchErrorMsg
 
-                return user
-            })
-    }
+        return user
+      })
+      .then(user => Promise.all([user, verifyPassword(password, user.password)]))
+      .then(([user, isMatch]) => {
+        if (!isMatch) throw matchErrorMsg
 
-    return {
-        ...guts,
-        create,
-        verify
-    }
+        return user
+      })
+  }
+
+  return {
+    ...guts,
+    update,
+    create,
+    verify
+  }
 }
